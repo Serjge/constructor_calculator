@@ -5,8 +5,16 @@ type ButtonPropsType = {
 };
 
 export const Button = styled.div<ButtonPropsType>`
-  background: ${({ typeButton, theme: { backgroundColor, mainColor } }) =>
-    typeButton === 'long' ? mainColor : backgroundColor};
+  ${({
+    typeButton,
+    theme: { mainBackgroundColor, mainColor, mainFontColor, borderColor },
+  }) => `
+  background: ${typeButton === 'long' ? mainColor : mainBackgroundColor};
+  height: ${typeButton === 'long' ? '64px' : '48px'};
+  color: ${typeButton === 'long' ? mainBackgroundColor : mainFontColor};
+  border: 2px solid
+    ${typeButton === 'long' ? mainColor : borderColor};
+   `}
   width: ${({ typeButton }) => {
     switch (typeButton) {
       case 'long':
@@ -19,23 +27,23 @@ export const Button = styled.div<ButtonPropsType>`
         return ' 72px';
     }
   }};
-  height: ${({ typeButton }) => (typeButton === 'long' ? '64px' : '48px')};
-  color: ${({ typeButton, theme: { backgroundColor, mainFontColor } }) =>
-    typeButton === 'long' ? backgroundColor : mainFontColor};
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid ${({ theme: { borderColor } }) => borderColor};
   border-radius: 6px;
   cursor: pointer;
   margin: 4px;
 
   &:hover {
-    border: 2px solid ${({ theme: { mainColor } }) => mainColor};
+    border: 2px solid
+      ${({ typeButton, theme: { mainColor, borderColor } }) =>
+        typeButton === 'long' ? borderColor : mainColor};
   }
 
   &:active {
-    background: ${({ theme: { mainColor } }) => mainColor};
-    color: ${({ theme: { backgroundColor } }) => backgroundColor};
+    ${({ typeButton, theme: { mainColor, mainBackgroundColor, borderColor } }) => `
+      background:  ${typeButton === 'long' ? borderColor : mainColor};
+      color: ${typeButton === 'long' ? mainColor : mainBackgroundColor};
+        `}
   }
 `;

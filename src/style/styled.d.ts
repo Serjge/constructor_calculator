@@ -2,7 +2,8 @@ import 'styled-components';
 
 declare module 'styled-components' {
   export interface DefaultTheme {
-    backgroundColor: string;
+    mainBackgroundColor: string;
+    secondBackgroundColor:string;
     mainFontColor: string;
     secondFontColor:string;
     mainColor: string;

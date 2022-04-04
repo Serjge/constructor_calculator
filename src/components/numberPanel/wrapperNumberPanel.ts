@@ -11,6 +11,6 @@ export const WrapperNumberPanel = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  background: ${({ theme: { backgroundColor } }) => backgroundColor};
+  background: ${({ theme: { mainBackgroundColor } }) => mainBackgroundColor};
   border-radius: 6px;
 `;

@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 
-import { Button, NumberBoard, NumberPanel, OperatorBoard } from 'components';
+import { Button, NumberBoard, NumberPanel, OperatorBoard, Toggle } from 'components';
 
 export const App = (): ReactElement => (
   <div>
@@ -10,6 +10,7 @@ export const App = (): ReactElement => (
       <NumberPanel />
       <NumberBoard />
       <OperatorBoard />
+      <Toggle />
     </div>
   </div>
 );
