@@ -5,4 +5,5 @@ export const theme: DefaultTheme = {
   secondFontColor: '#4D5562',
   mainColor: '#5D5FEF',
   backgroundColor: '#E5E5E5',
+  borderColor: 'yarn ',
 };
