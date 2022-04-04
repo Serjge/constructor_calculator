@@ -20,7 +20,8 @@ export const GlobalStyle = createGlobalStyle<GlobalThemeProps>`
     font-family: "Inter", sans-serif;
     -webkit-font-smoothing: antialiased;
     margin: 0 auto;
-    background-color: ${({ theme: { backgroundColor } }) => backgroundColor};
+    //background-color: ${({ theme: { backgroundColor } }) => backgroundColor};
+    background-color: grey;
     color: ${({ theme: { mainFontColor } }) => mainFontColor};
   }
 `;
