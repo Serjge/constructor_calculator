@@ -11,6 +11,7 @@ export const LeverToggle = styled.div<LeverTogglePropsType>`
   }) => `
   background-color: ${isActive ? mainBackgroundColor : secondBackgroundColor};
   color: ${secondFontColor};
+  border-radius: ${isActive ? '5px' : ''};
   `};
   display: flex;
   justify-content: center;
@@ -20,16 +21,14 @@ export const LeverToggle = styled.div<LeverTogglePropsType>`
   font-weight: 500;
   font-size: 14px;
   line-height: 15px;
-  border-radius: 5px;
   cursor: pointer;
 `;
 
 export const WrapperToggle = styled.div`
-  ${({ theme: { secondBackgroundColor } }) => `
-  border: 1px solid ${secondBackgroundColor};
+  ${({ theme: { secondBackgroundColor, mainBackgroundColor } }) => `
+  border: 1px solid ${mainBackgroundColor};
   background-color: ${secondBackgroundColor};
   `};
-  //width: 243px;
   display: flex;
   align-items: center;
   height: 38px;

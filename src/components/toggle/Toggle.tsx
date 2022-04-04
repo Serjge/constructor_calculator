@@ -16,11 +16,11 @@ export const Toggle = (): ReactElement => {
 
   return (
     <WrapperToggle>
-      <LeverToggle onClick={onActiveRuntimeClick} isActive={isToggle}>
+      <LeverToggle onClick={onActiveRuntimeClick} isActive={!isToggle}>
         <Eye color={colorRuntime} />
         Runtime
       </LeverToggle>
-      <LeverToggle onClick={onActiveConstructorClick} isActive={!isToggle}>
+      <LeverToggle onClick={onActiveConstructorClick} isActive={isToggle}>
         <AngleBrackets color={colorConstructor} />
         Constructor
       </LeverToggle>
