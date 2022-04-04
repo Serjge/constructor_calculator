@@ -1,4 +1,10 @@
 export { Button } from './button';
-export { NumberBoard, OperatorBoard } from './boards';
-export { NumberPanel } from './numberPanel';
+export {
+  NumberBoard,
+  OperatorBoard,
+  NumberDisplayBoard,
+  EqualsSingBoard,
+} from './boards';
+export { NumberDisplay } from './numberDisplay';
 export { Toggle } from './toggle';
+export { DeskWithCalculatorElements } from './deskWithCalculatorElements';

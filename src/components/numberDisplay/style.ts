@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
-export const WrapperNumberPanel = styled.div`
+export const Wrapper = styled.div`
+  margin: 4px;
   width: 232px;
   height: 60px;
   border: 4px solid ${({ theme: { borderColor } }) => borderColor};

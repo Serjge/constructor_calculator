@@ -1,0 +1,1 @@
+export { EqualsSingBoard } from './EqualsSingBoard';
