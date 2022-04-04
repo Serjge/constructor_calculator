@@ -1,1 +1,2 @@
-export { constructorReducer } from './ConstructorSlice';
+export { constructorReducer, constructorSlice } from './constructorSlice';
+export { calculatorReducer, calculatorSlice } from './calculatorSlice';
