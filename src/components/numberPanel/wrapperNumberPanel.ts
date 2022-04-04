@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const WrapperNumberPanel = styled.div`
-  width: 240px;
+  width: 232px;
   height: 60px;
   border: 4px solid ${({ theme: { borderColor } }) => borderColor};
   padding: 8px;

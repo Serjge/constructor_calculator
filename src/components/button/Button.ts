@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 type ButtonPropsType = {
-  typeButton?: 'long' | 'default' | 'medium';
+  typeButton?: 'long' | 'default' | 'medium' | 'small';
 };
 
 export const Button = styled.div<ButtonPropsType>`
@@ -10,9 +10,11 @@ export const Button = styled.div<ButtonPropsType>`
   width: ${({ typeButton }) => {
     switch (typeButton) {
       case 'long':
-        return '240px';
+        return '232px';
       case 'medium':
         return '152px';
+      case 'small':
+        return '52px';
       default:
         return ' 72px';
     }
