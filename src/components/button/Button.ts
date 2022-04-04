@@ -1,13 +1,22 @@
 import styled from 'styled-components';
 
 type ButtonPropsType = {
-  typeButton?: 'long' | 'default';
+  typeButton?: 'long' | 'default' | 'medium';
 };
 
 export const Button = styled.div<ButtonPropsType>`
   background: ${({ typeButton, theme: { backgroundColor, mainColor } }) =>
     typeButton === 'long' ? mainColor : backgroundColor};
-  width: ${({ typeButton }) => (typeButton === 'long' ? '232px' : '72px')};
+  width: ${({ typeButton }) => {
+    switch (typeButton) {
+      case 'long':
+        return '240px';
+      case 'medium':
+        return '152px';
+      default:
+        return ' 72px';
+    }
+  }};
   height: ${({ typeButton }) => (typeButton === 'long' ? '64px' : '48px')};
   color: ${({ typeButton, theme: { backgroundColor, mainFontColor } }) =>
     typeButton === 'long' ? backgroundColor : mainFontColor};
@@ -17,6 +26,7 @@ export const Button = styled.div<ButtonPropsType>`
   border: 2px solid ${({ theme: { borderColor } }) => borderColor};
   border-radius: 6px;
   cursor: pointer;
+  margin: 4px;
 
   &:hover {
     border: 2px solid ${({ theme: { mainColor } }) => mainColor};

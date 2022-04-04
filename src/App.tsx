@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react';
 
 import { Button } from 'components';
+import { NumberBoard } from 'components/NumberBoard/NumberBoard';
 import { NumberPanel } from 'components/numberPanel/NumberPanel';
 
 export const App = (): ReactElement => (
@@ -9,6 +10,7 @@ export const App = (): ReactElement => (
       <Button>2</Button>
       <Button typeButton="long">=</Button>
       <NumberPanel />
+      <NumberBoard />
     </div>
   </div>
 );
