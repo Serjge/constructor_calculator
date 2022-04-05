@@ -8,3 +8,4 @@ export {
 export { NumberDisplay } from './numberDisplay';
 export { Toggle } from './toggle';
 export { DeskWithCalculatorElements } from './deskWithCalculatorElements';
+export { LayoutDesk } from './layoutDesk';

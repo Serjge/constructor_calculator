@@ -29,7 +29,11 @@ export const WrapperToggle = styled.div`
   border: 1px solid ${mainBackgroundColor};
   background-color: ${secondBackgroundColor};
   `};
+
+  margin: 30px;
+
   display: flex;
+  justify-content: space-between;
   align-items: center;
   height: 38px;
   border-radius: 6px;

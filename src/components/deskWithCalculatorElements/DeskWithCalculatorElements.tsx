@@ -9,7 +9,7 @@ export const DeskWithCalculatorElements = (): ReactElement => {
   const boards = useSelector(selectCalculatorElements);
 
   return (
-    <div>
+    <div style={{ margin: '30px' }}>
       {boards.map(({ type }) => {
         const BoardComponent = BOARD_COMPONENTS[type];
         return <BoardComponent key={type} />;

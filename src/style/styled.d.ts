@@ -7,6 +7,7 @@ declare module 'styled-components' {
     mainFontColor: string;
     secondFontColor:string;
     mainColor: string;
-    borderColor:string;
+    mainBorderColor:string;
+    secondBorderColor:string;
   }
 }

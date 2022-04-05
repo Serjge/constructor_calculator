@@ -7,13 +7,13 @@ type ButtonPropsType = {
 export const Button = styled.div<ButtonPropsType>`
   ${({
     typeButton,
-    theme: { mainBackgroundColor, mainColor, mainFontColor, borderColor },
+    theme: { mainBackgroundColor, mainColor, mainFontColor, mainBorderColor },
   }) => `
   background: ${typeButton === 'long' ? mainColor : mainBackgroundColor};
   height: ${typeButton === 'long' ? '64px' : '48px'};
   color: ${typeButton === 'long' ? mainBackgroundColor : mainFontColor};
   border: 2px solid
-    ${typeButton === 'long' ? mainColor : borderColor};
+    ${typeButton === 'long' ? mainColor : mainBorderColor};
    `}
   width: ${({ typeButton }) => {
     switch (typeButton) {
@@ -36,13 +36,13 @@ export const Button = styled.div<ButtonPropsType>`
 
   &:hover {
     border: 2px solid
-      ${({ typeButton, theme: { mainColor, borderColor } }) =>
-        typeButton === 'long' ? borderColor : mainColor};
+      ${({ typeButton, theme: { mainColor, mainBorderColor } }) =>
+        typeButton === 'long' ? mainBorderColor : mainColor};
   }
 
   &:active {
-    ${({ typeButton, theme: { mainColor, mainBackgroundColor, borderColor } }) => `
-      background:  ${typeButton === 'long' ? borderColor : mainColor};
+    ${({ typeButton, theme: { mainColor, mainBackgroundColor, mainBorderColor } }) => `
+      background:  ${typeButton === 'long' ? mainBorderColor : mainColor};
       color: ${typeButton === 'long' ? mainColor : mainBackgroundColor};
         `}
   }

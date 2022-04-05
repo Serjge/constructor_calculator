@@ -4,7 +4,7 @@ export const Wrapper = styled.div`
   margin: 4px;
   width: 232px;
   height: 60px;
-  border: 4px solid ${({ theme: { borderColor } }) => borderColor};
+  border: 4px solid ${({ theme: { mainBorderColor } }) => mainBorderColor};
   padding: 8px;
   font-weight: 800;
   font-size: 36px;
