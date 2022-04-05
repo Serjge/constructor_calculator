@@ -4,7 +4,7 @@ import { Toggle, DeskWithCalculatorElements } from 'components';
 
 export const App = (): ReactElement => (
   <div>
-    <div style={{ display: 'flex' }}>
+    <div>
       <DeskWithCalculatorElements />
       <Toggle />
     </div>
