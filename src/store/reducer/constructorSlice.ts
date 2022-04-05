@@ -1,33 +1,35 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { RootState } from 'store/types';
+import { BoardType } from 'types';
 
-export type CounterState = {
-  value: number;
-  status: 'idle' | 'loading' | 'failed';
+export type ConstructorStateType = {
+  calculatorElements: BoardType[];
+  selectedElements: BoardType[];
+  isConstructor: boolean;
 };
 
-const initialState: CounterState = {
-  value: 0,
-  status: 'idle',
+const initialState: ConstructorStateType = {
+  calculatorElements: [
+    { id: '1', type: 'numberDisplay', isDisable: false, dataCurrency: 'numberDisplay' },
+    { id: '2', type: 'operators', isDisable: false, dataCurrency: 'operators' },
+    { id: '3', type: 'numbers', isDisable: false, dataCurrency: 'numbers' },
+    { id: '4', type: 'equalsSing', isDisable: false, dataCurrency: 'equalsSing' },
+  ],
+  selectedElements: [],
+  isConstructor: true,
 };
 
 export const constructorSlice = createSlice({
   name: 'constructor',
   initialState,
   reducers: {
-    increment: state => {
-      state.value += 1;
-    },
-    decrement: state => {
-      state.value -= 1;
-    },
-    incrementByAmount: (state, action: PayloadAction<number>) => {
-      state.value += action.payload;
+    addElement: (state, action: PayloadAction<string>) => {
+      const board = state.calculatorElements.find(({ id }) => id === action.payload);
+      if (board) {
+        state.selectedElements.push(board);
+      }
     },
   },
 });
 
-export const { incrementByAmount } = constructorSlice.actions;
-export const selectCount = (state: RootState): number => state.constructor.value;
 export const constructorReducer = constructorSlice.reducer;
