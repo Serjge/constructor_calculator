@@ -2,10 +2,10 @@ import { RootState } from 'store/types';
 import { BoardType } from 'types';
 
 export const selectCalculatorElements = (state: RootState): BoardType[] =>
-  state.constructor.calculatorElements;
+  state.constructorCalc.calculatorElements;
 
 export const selectSelectedElements = (state: RootState): BoardType[] =>
-  state.constructor.selectedElements;
+  state.constructorCalc.selectedElements;
 
 export const selectIsConstructor = (state: RootState): boolean =>
-  state.constructor.isConstructor;
+  state.constructorCalc.isConstructor;

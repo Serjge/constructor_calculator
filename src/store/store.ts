@@ -4,7 +4,7 @@ import { calculatorReducer, constructorReducer } from 'store/reducer';
 
 export const store = configureStore({
   reducer: {
-    constructor: constructorReducer,
+    constructorCalc: constructorReducer,
     calculator: calculatorReducer,
   },
 });

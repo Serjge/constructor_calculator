@@ -7,7 +7,7 @@ import { AngleBrackets, Eye } from 'icon';
 
 export const Toggle = (): ReactElement => {
   const {
-    isToggle,
+    isConstructor,
     colorConstructor,
     onActiveConstructorClick,
     onActiveRuntimeClick,
@@ -16,11 +16,11 @@ export const Toggle = (): ReactElement => {
 
   return (
     <WrapperToggle>
-      <LeverToggle onClick={onActiveRuntimeClick} isActive={!isToggle}>
+      <LeverToggle onClick={onActiveRuntimeClick} isActive={!isConstructor}>
         <Eye color={colorRuntime} />
         Runtime
       </LeverToggle>
-      <LeverToggle onClick={onActiveConstructorClick} isActive={isToggle}>
+      <LeverToggle onClick={onActiveConstructorClick} isActive={isConstructor}>
         <AngleBrackets color={colorConstructor} />
         Constructor
       </LeverToggle>

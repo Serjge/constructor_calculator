@@ -1,9 +1,12 @@
-import { useState } from 'react';
-
+import { useDispatch } from 'react-redux';
 import { useTheme } from 'styled-components';
 
+import { setIsConstructor } from 'store/action';
+import { useAppSelector } from 'store/hooks';
+import { selectIsConstructor } from 'store/selectors';
+
 type UseToggleConstructorReturnType = {
-  isToggle: boolean;
+  isConstructor: boolean;
   onActiveConstructorClick: () => void;
   onActiveRuntimeClick: () => void;
   colorConstructor: string;
@@ -11,13 +14,23 @@ type UseToggleConstructorReturnType = {
 };
 
 export const useToggleConstructor = (): UseToggleConstructorReturnType => {
-  const [isToggle, setIsToggle] = useState(true);
+  const dispatch = useDispatch();
+
+  const isConstructor = useAppSelector(selectIsConstructor);
 
   const { mainColor, secondFontColor } = useTheme();
 
-  const onActiveConstructorClick = (): void => setIsToggle(true);
+  const onActiveConstructorClick = (): void => {
+    if (!isConstructor) {
+      dispatch(setIsConstructor(true));
+    }
+  };
 
-  const onActiveRuntimeClick = (): void => setIsToggle(false);
+  const onActiveRuntimeClick = (): void => {
+    if (isConstructor) {
+      dispatch(setIsConstructor(false));
+    }
+  };
 
   const getColor = (isActive: boolean): string => {
     if (isActive) {
@@ -26,12 +39,12 @@ export const useToggleConstructor = (): UseToggleConstructorReturnType => {
     return secondFontColor;
   };
 
-  const colorConstructor = getColor(isToggle);
+  const colorConstructor = getColor(isConstructor);
 
-  const colorRuntime = getColor(!isToggle);
+  const colorRuntime = getColor(!isConstructor);
 
   return {
-    isToggle,
+    isConstructor,
     onActiveConstructorClick,
     onActiveRuntimeClick,
     colorConstructor,

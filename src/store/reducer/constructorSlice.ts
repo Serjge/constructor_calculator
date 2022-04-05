@@ -2,13 +2,13 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { BoardType } from 'types';
 
-export type ConstructorStateType = {
+export type ConstructorState = {
   calculatorElements: BoardType[];
   selectedElements: BoardType[];
   isConstructor: boolean;
 };
 
-const initialState: ConstructorStateType = {
+const initialState: ConstructorState = {
   calculatorElements: [
     { id: '1', type: 'numberDisplay', isDisable: false, dataCurrency: 'numberDisplay' },
     { id: '2', type: 'operators', isDisable: false, dataCurrency: 'operators' },
@@ -28,6 +28,9 @@ export const constructorSlice = createSlice({
       if (board) {
         state.selectedElements.push(board);
       }
+    },
+    setIsConstructor: (state, action: PayloadAction<boolean>) => {
+      state.isConstructor = action.payload;
     },
   },
 });
