@@ -7,5 +7,4 @@ export {
 } from './boards';
 export { NumberDisplay } from './numberDisplay';
 export { Toggle } from './toggle';
-export { DeskWithCalculatorElements } from './deskWithCalculatorElements';
-export { LayoutDesk } from './layoutDesk';
+export { ElementsDesk, LayoutDesk } from './desks';

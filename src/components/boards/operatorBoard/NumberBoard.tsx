@@ -3,10 +3,10 @@ import { ReactElement } from 'react';
 import { Button } from 'components/index';
 import { WrapperBoard } from 'style';
 
-export const OperatorBoard = (): ReactElement => {
+export const OperatorBoard = ({ ...props }): ReactElement => {
   const numbers = ['/', 'X', '-', '+'];
   return (
-    <WrapperBoard>
+    <WrapperBoard {...props}>
       {numbers.map(number => (
         <Button typeButton="small" key={number}>
           {number}

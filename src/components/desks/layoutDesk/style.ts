@@ -1,6 +1,10 @@
 import styled from 'styled-components';
 
-export const Wrapper = styled.div`
+type WrapperPropsType = {
+  isEmpty?: boolean;
+};
+
+export const Wrapper = styled.div<WrapperPropsType>`
   margin: 30px;
   display: flex;
   justify-content: center;
@@ -14,10 +18,10 @@ export const Wrapper = styled.div`
   font-size: 12px;
   line-height: 15px;
 
-  border: 2px dashed ${({ theme: { secondBorderColor } }) => secondBorderColor};
   box-sizing: border-box;
   border-radius: 6px;
 
+  border: 2px dashed ${({ theme: { secondBorderColor } }) => secondBorderColor};
   & div {
     width: 130px;
     text-align: center;
