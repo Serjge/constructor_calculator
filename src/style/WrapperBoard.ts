@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const WrapperBoard = styled.div`
   width: 240px;
-  margin: 12px;
+  margin: 12px 0;
   display: flex;
   flex-wrap: wrap;
   background-color: ${({ theme: { mainBackgroundColor } }) => mainBackgroundColor};

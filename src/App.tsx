@@ -12,7 +12,6 @@ export const App = (): ReactElement => {
   const [oneBoards, setOneBoards] = useState(boards);
   const [twoBoards, setTwoBoards] = useState<BoardType[]>([]);
 
-  const [currentBoard, setCurrentBoard] = useState<number | null>(null);
   const [currentItem, setCurrentItem] = useState<BoardType | null>(null);
 
   return (
@@ -29,18 +28,12 @@ export const App = (): ReactElement => {
           justifyContent: 'center',
         }}
       >
-        <ElementsDesk
-          oneBoards={oneBoards}
-          setCurrentBoard={setCurrentBoard}
-          setCurrentItem={setCurrentItem}
-        />
+        <ElementsDesk oneBoards={oneBoards} setCurrentItem={setCurrentItem} />
 
         {/* <Toggle /> */}
         <LayoutDesk
           setCurrentItem={setCurrentItem}
-          setCurrentBoard={setCurrentBoard}
           currentItem={currentItem}
-          currentBoard={currentBoard}
           oneBoards={oneBoards}
           setOneBoards={setOneBoards}
           setTwoBoards={setTwoBoards}

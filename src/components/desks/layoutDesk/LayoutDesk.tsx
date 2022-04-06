@@ -5,15 +5,14 @@ import { BOARD_COMPONENTS } from 'const';
 import { Desks } from 'enum';
 import { Leaf } from 'icon/Leaf';
 import { BoardType } from 'types';
+import { sortBoards } from 'utils';
 
 type LayoutDeskPropsType = {
   twoBoards: BoardType[];
   setTwoBoards: React.Dispatch<React.SetStateAction<BoardType[]>>;
   setOneBoards: React.Dispatch<React.SetStateAction<BoardType[]>>;
   oneBoards: BoardType[];
-  currentBoard: number | null;
   currentItem: BoardType | null;
-  setCurrentBoard: React.Dispatch<React.SetStateAction<number | null>>;
   setCurrentItem: React.Dispatch<React.SetStateAction<BoardType | null>>;
 };
 
@@ -22,10 +21,8 @@ const ZERO = 0;
 export const LayoutDesk = ({
   setOneBoards,
   oneBoards,
-  currentBoard,
   currentItem,
   setCurrentItem,
-  setCurrentBoard,
   twoBoards,
   setTwoBoards,
 }: LayoutDeskPropsType): ReactElement => {
@@ -48,9 +45,23 @@ export const LayoutDesk = ({
     e.currentTarget.style.background = 'none';
   };
 
-  const dropHandler = (e: React.DragEvent<HTMLDivElement>): void => {
+  const dropHandler = (e: React.DragEvent<HTMLDivElement>, board: BoardType): void => {
     e.preventDefault();
     e.currentTarget.style.background = 'none';
+
+    if (currentItem!.isAddLayout) {
+      setTwoBoards(
+        twoBoards.map(item => {
+          if (item.id === board!.id) {
+            return { ...item, order: currentItem!.order };
+          }
+          if (item.id === currentItem!.id) {
+            return { ...item, order: board!.order };
+          }
+          return item;
+        }),
+      );
+    }
   };
 
   const onDoubleClick = (task: BoardType): void => {
@@ -59,17 +70,23 @@ export const LayoutDesk = ({
       oneBoards.map(item => (item.id === task.id ? { ...item, isDisable: false } : item)),
     );
   };
-  console.log(currentBoard);
 
-  const dropLayoutDeskHandler = (): void => {
+  const dropLayoutDeskHandler = (e: React.DragEvent<HTMLDivElement>): void => {
+    e.preventDefault();
     if (currentItem) {
-      twoBoards.push(currentItem);
-      setTwoBoards([...twoBoards]);
-      setOneBoards(
-        oneBoards.map(item =>
-          item.id === currentItem.id ? { ...item, isDisable: true } : item,
-        ),
-      );
+      if (!currentItem.isAddLayout) {
+        twoBoards.push(currentItem);
+        setOneBoards(
+          oneBoards.map(item =>
+            item.id === currentItem.id ? { ...item, isDisable: true } : item,
+          ),
+        );
+        setTwoBoards(
+          twoBoards.map(item =>
+            item.id === currentItem.id ? { ...item, isAddLayout: true } : item,
+          ),
+        );
+      }
     }
   };
   const dragStartHandler = (
@@ -77,7 +94,6 @@ export const LayoutDesk = ({
     board: number,
     item: BoardType,
   ): void => {
-    setCurrentBoard(board);
     setCurrentItem(item);
   };
 
@@ -104,7 +120,7 @@ export const LayoutDesk = ({
       onDragOver={(e: React.DragEvent<HTMLDivElement>) => dragOverHandler(e)}
       data-currency="filledDesk"
     >
-      {twoBoards.map(item => {
+      {twoBoards.sort(sortBoards).map(item => {
         const BoardComponent = BOARD_COMPONENTS[item.type];
         return (
           <BoardComponent
@@ -118,7 +134,7 @@ export const LayoutDesk = ({
               dragStartHandler(e, Desks.Layout, item)
             }
             onDragEnd={(e: React.DragEvent<HTMLDivElement>) => dragEndHandler(e)}
-            onDrop={(e: React.DragEvent<HTMLDivElement>) => dropHandler(e)}
+            onDrop={(e: React.DragEvent<HTMLDivElement>) => dropHandler(e, item)}
             onDragCapture={(e: React.DragEvent<HTMLDivElement>) => dragEndHandler(e)}
             draggable={!item.isDisable}
           />

@@ -6,23 +6,18 @@ import { BoardType } from 'types';
 
 type DeskWithCalculatorElementsPropsType = {
   oneBoards: BoardType[];
-  setCurrentBoard: Dispatch<React.SetStateAction<number | null>>;
   setCurrentItem: Dispatch<React.SetStateAction<BoardType | null>>;
 };
 
 export const ElementsDesk = ({
-  setCurrentBoard,
   setCurrentItem,
   oneBoards,
 }: DeskWithCalculatorElementsPropsType): ReactElement => {
-  // const boards = useSelector(selectCalculatorElements);
-
   const dragStartHandler = (
     e: React.DragEvent<HTMLDivElement>,
     board: number,
     item: BoardType,
   ): void => {
-    setCurrentBoard(board);
     setCurrentItem(item);
   };
 

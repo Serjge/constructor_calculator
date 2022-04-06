@@ -5,4 +5,6 @@ export type BoardType = {
   type: ComponentsBoardsType;
   isDisable: boolean;
   dataCurrency: ComponentsBoardsType;
+  isAddLayout: boolean;
+  order: number;
 };

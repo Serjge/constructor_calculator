@@ -10,10 +10,38 @@ export type ConstructorState = {
 
 const initialState: ConstructorState = {
   calculatorElements: [
-    { id: '1', type: 'numberDisplay', isDisable: false, dataCurrency: 'numberDisplay' },
-    { id: '2', type: 'operators', isDisable: false, dataCurrency: 'operators' },
-    { id: '3', type: 'numbers', isDisable: false, dataCurrency: 'numbers' },
-    { id: '4', type: 'equalsSing', isDisable: false, dataCurrency: 'equalsSing' },
+    {
+      id: '1',
+      type: 'numberDisplay',
+      isDisable: false,
+      dataCurrency: 'numberDisplay',
+      isAddLayout: false,
+      order: 1,
+    },
+    {
+      id: '2',
+      type: 'operators',
+      isDisable: false,
+      dataCurrency: 'operators',
+      isAddLayout: false,
+      order: 2,
+    },
+    {
+      id: '3',
+      type: 'numbers',
+      isDisable: false,
+      dataCurrency: 'numbers',
+      isAddLayout: false,
+      order: 3,
+    },
+    {
+      id: '4',
+      type: 'equalsSing',
+      isDisable: false,
+      dataCurrency: 'equalsSing',
+      isAddLayout: false,
+      order: 4,
+    },
   ],
   selectedElements: [],
   isConstructor: true,
