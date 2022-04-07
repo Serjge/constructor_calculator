@@ -17,6 +17,8 @@ const initialState: ConstructorState = {
       dataCurrency: 'numberDisplay',
       isAddLayout: false,
       order: 1,
+      isOverBoard: false,
+      isLastElementLayoutDesk: false,
     },
     {
       id: '2',
@@ -25,6 +27,8 @@ const initialState: ConstructorState = {
       dataCurrency: 'operators',
       isAddLayout: false,
       order: 2,
+      isOverBoard: false,
+      isLastElementLayoutDesk: false,
     },
     {
       id: '3',
@@ -33,6 +37,8 @@ const initialState: ConstructorState = {
       dataCurrency: 'numbers',
       isAddLayout: false,
       order: 3,
+      isOverBoard: false,
+      isLastElementLayoutDesk: false,
     },
     {
       id: '4',
@@ -41,6 +47,8 @@ const initialState: ConstructorState = {
       dataCurrency: 'equalsSing',
       isAddLayout: false,
       order: 4,
+      isOverBoard: false,
+      isLastElementLayoutDesk: false,
     },
   ],
   selectedElements: [],

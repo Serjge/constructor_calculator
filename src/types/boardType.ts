@@ -7,4 +7,6 @@ export type BoardType = {
   dataCurrency: ComponentsBoardsType;
   isAddLayout: boolean;
   order: number;
+  isOverBoard: boolean;
+  isLastElementLayoutDesk: boolean;
 };

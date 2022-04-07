@@ -3,16 +3,18 @@ import React, { HTMLAttributes, ReactElement } from 'react';
 import { Button } from 'components';
 import { WrapperBoard } from 'style';
 
-type NumberBoardPropsType = HTMLAttributes<HTMLElement> & {
+type EqualsSingBoardPropsType = HTMLAttributes<HTMLElement> & {
   isAddLayout?: boolean;
   isDraggable?: boolean;
+  isOverDesk?: boolean;
+  isOverBoard?: boolean;
 };
 
 export const EqualsSingBoard = ({
   isAddLayout,
   isDraggable,
   ...props
-}: NumberBoardPropsType): ReactElement => (
+}: EqualsSingBoardPropsType): ReactElement => (
   <WrapperBoard isDraggable={isDraggable} isAddLayout={isAddLayout} {...props}>
     <Button typeButton="long">=</Button>
   </WrapperBoard>

@@ -3,16 +3,18 @@ import { HTMLAttributes, ReactElement } from 'react';
 import { Button } from 'components/index';
 import { WrapperBoard } from 'style';
 
-type NumberBoardPropsType = HTMLAttributes<HTMLElement> & {
+type OperatorBoardPropsType = HTMLAttributes<HTMLElement> & {
   isAddLayout?: boolean;
   isDraggable?: boolean;
+  isOverDesk?: boolean;
+  isOverBoard?: boolean;
 };
 
 export const OperatorBoard = ({
   isAddLayout,
   isDraggable,
   ...props
-}: NumberBoardPropsType): ReactElement => {
+}: OperatorBoardPropsType): ReactElement => {
   const numbers = ['/', 'X', '-', '+'];
   return (
     <WrapperBoard isDraggable={isDraggable} isAddLayout={isAddLayout} {...props}>

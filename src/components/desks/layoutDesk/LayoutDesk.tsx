@@ -33,12 +33,67 @@ export const LayoutDesk = ({
     if (currency === 'emptyDesk') {
       e.currentTarget.style.background = ' #F0F9FF';
     }
+    if (currency === 'operators') {
+      setTwoBoards(
+        twoBoards.map(board =>
+          board.type === 'operators' ? { ...board, isOverBoard: true } : board,
+        ),
+      );
+    }
+    if (currency === 'numbers') {
+      setTwoBoards(
+        twoBoards.map(board =>
+          board.type === 'numbers' ? { ...board, isOverBoard: true } : board,
+        ),
+      );
+    }
+    if (currency === 'equalsSing') {
+      setTwoBoards(
+        twoBoards.map(board =>
+          board.type === 'equalsSing' ? { ...board, isOverBoard: true } : board,
+        ),
+      );
+    }
+
+    if (!currentBoard!.isAddLayout) {
+      // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+      const indexLastBoard = twoBoards.length - 1;
+      const lastElement = twoBoards[indexLastBoard];
+      setTwoBoards(
+        twoBoards.map(board =>
+          board.id === lastElement.id
+            ? { ...board, isLastElementLayoutDesk: true }
+            : board,
+        ),
+      );
+    }
   };
 
   const dragLeaveHandler = (e: DragEvent<HTMLDivElement>): void => {
     const { currency } = e.currentTarget.dataset;
     if (currency === 'emptyDesk') {
       e.currentTarget.style.background = 'none';
+    }
+    if (currency === 'operators') {
+      setTwoBoards(
+        twoBoards.map(board =>
+          board.type === 'operators' ? { ...board, isOverBoard: false } : board,
+        ),
+      );
+    }
+    if (currency === 'numbers') {
+      setTwoBoards(
+        twoBoards.map(board =>
+          board.type === 'numbers' ? { ...board, isOverBoard: false } : board,
+        ),
+      );
+    }
+    if (currency === 'equalsSing') {
+      setTwoBoards(
+        twoBoards.map(board =>
+          board.type === 'equalsSing' ? { ...board, isOverBoard: false } : board,
+        ),
+      );
     }
   };
 
@@ -49,7 +104,6 @@ export const LayoutDesk = ({
   const dropHandler = (e: DragEvent<HTMLDivElement>, draggableBoard: BoardType): void => {
     e.preventDefault();
     e.currentTarget.style.background = 'none';
-
     if (currentBoard!.isAddLayout) {
       setTwoBoards(
         twoBoards.map(board => {
@@ -57,12 +111,22 @@ export const LayoutDesk = ({
             return board;
           }
           if (board.id === draggableBoard!.id) {
-            return { ...board, order: currentBoard!.order };
+            return {
+              ...board,
+              order: currentBoard!.order,
+              isLastElementLayoutDesk: false,
+              isOverBoard: false,
+            };
           }
           if (board.id === currentBoard!.id) {
-            return { ...board, order: draggableBoard!.order };
+            return {
+              ...board,
+              order: draggableBoard!.order,
+              isLastElementLayoutDesk: false,
+              isOverBoard: false,
+            };
           }
-          return board;
+          return { ...board, isLastElementLayoutDesk: false, isOverBoard: false };
         }),
       );
     }
@@ -70,9 +134,12 @@ export const LayoutDesk = ({
 
   const onDoubleClick = (draggableBoard: BoardType): void => {
     setTwoBoards(twoBoards.filter(item => item.id !== draggableBoard.id));
+
     setOneBoards(
       oneBoards.map(board =>
-        board.id === draggableBoard.id ? { ...board, isDisable: false } : board,
+        board.id === draggableBoard.id
+          ? { ...board, isDisable: false, isAddLayout: false }
+          : board,
       ),
     );
   };
@@ -101,8 +168,9 @@ export const LayoutDesk = ({
                   ...board,
                   isAddLayout: true,
                   isDisable: currentBoard.type === 'numberDisplay',
+                  isLastElementLayoutDesk: false,
                 }
-              : board,
+              : { ...board, isLastElementLayoutDesk: false },
           ),
         );
       }
@@ -144,6 +212,8 @@ export const LayoutDesk = ({
         const isDraggableNumberDisplay = board.type !== 'numberDisplay';
         return (
           <BoardComponent
+            isOverBoard={board.isOverBoard}
+            isOverDesk={board.isLastElementLayoutDesk}
             isAddLayout={board.isAddLayout}
             isDraggable={!board.isDisable}
             key={board.id}

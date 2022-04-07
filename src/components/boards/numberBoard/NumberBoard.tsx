@@ -6,6 +6,8 @@ import { WrapperBoard } from 'style';
 type NumberBoardPropsType = {
   isAddLayout?: boolean;
   isDraggable?: boolean;
+  isOverDesk?: boolean;
+  isOverBoard?: boolean;
 };
 
 export const NumberBoard = ({
