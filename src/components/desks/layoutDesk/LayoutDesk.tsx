@@ -1,10 +1,13 @@
 import React, { ReactElement, DragEvent, SetStateAction, Dispatch } from 'react';
 
+import { useDispatch } from 'react-redux';
+
 import { Wrapper } from './style';
 
 import { BOARD_COMPONENTS } from 'const';
 import { Desks } from 'enum';
 import { Leaf } from 'icon/Leaf';
+import { setCurrentBoardDragId } from 'store/action';
 import { BoardType } from 'types';
 import { sortBoards } from 'utils';
 
@@ -27,6 +30,8 @@ export const LayoutDesk = ({
   twoBoards,
   setTwoBoards,
 }: LayoutDeskPropsType): ReactElement => {
+  const dispatch = useDispatch();
+
   const dragOverHandler = (e: DragEvent<HTMLDivElement>): void => {
     e.preventDefault();
     const { currency } = e.currentTarget.dataset;
@@ -103,6 +108,7 @@ export const LayoutDesk = ({
 
   const dropHandler = (e: DragEvent<HTMLDivElement>, draggableBoard: BoardType): void => {
     e.preventDefault();
+    dispatch(setCurrentBoardDragId(null));
     e.currentTarget.style.background = 'none';
     if (currentBoard!.isAddLayout) {
       setTwoBoards(
@@ -146,6 +152,7 @@ export const LayoutDesk = ({
 
   const dropLayoutDeskHandler = (e: DragEvent<HTMLDivElement>): void => {
     e.preventDefault();
+    dispatch(setCurrentBoardDragId(null));
     if (currentBoard) {
       if (!currentBoard.isAddLayout) {
         if (currentBoard.type === 'numberDisplay') {
@@ -181,6 +188,7 @@ export const LayoutDesk = ({
     board: number,
     draggableBoard: BoardType,
   ): void => {
+    dispatch(setCurrentBoardDragId(draggableBoard.id));
     setCurrentBoard(draggableBoard);
   };
 

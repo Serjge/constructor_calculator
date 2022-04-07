@@ -1,7 +1,10 @@
 import React, { Dispatch, ReactElement } from 'react';
 
+import { useDispatch } from 'react-redux';
+
 import { BOARD_COMPONENTS } from 'const';
 import { Desks } from 'enum';
+import { setCurrentBoardDragId } from 'store/action';
 import { BoardType } from 'types';
 
 type DeskWithCalculatorElementsPropsType = {
@@ -13,11 +16,14 @@ export const ElementsDesk = ({
   setCurrentItem,
   oneBoards,
 }: DeskWithCalculatorElementsPropsType): ReactElement => {
+  const dispatch = useDispatch();
+
   const dragStartHandler = (
     e: React.DragEvent<HTMLDivElement>,
     board: number,
     item: BoardType,
   ): void => {
+    dispatch(setCurrentBoardDragId(item.id));
     setCurrentItem(item);
   };
 

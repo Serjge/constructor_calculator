@@ -6,6 +6,7 @@ export type ConstructorState = {
   calculatorElements: BoardType[];
   selectedElements: BoardType[];
   isConstructor: boolean;
+  currentBoardDragId: string | null;
 };
 
 const initialState: ConstructorState = {
@@ -53,6 +54,7 @@ const initialState: ConstructorState = {
   ],
   selectedElements: [],
   isConstructor: true,
+  currentBoardDragId: null,
 };
 
 export const constructorSlice = createSlice({
@@ -67,6 +69,9 @@ export const constructorSlice = createSlice({
     },
     setIsConstructor: (state, action: PayloadAction<boolean>) => {
       state.isConstructor = action.payload;
+    },
+    setCurrentBoardDragId: (state, action: PayloadAction<string | null>) => {
+      state.currentBoardDragId = action.payload;
     },
   },
 });
