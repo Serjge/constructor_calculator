@@ -15,6 +15,7 @@ const elementShadow = css`
 const afterElement = (
   isOverDesk?: boolean,
   isOverBoard?: boolean,
+  color?: string,
 ): FlattenSimpleInterpolation => css`
   &:after {
     content: '';
@@ -23,50 +24,28 @@ const afterElement = (
     height: 1px;
     top: ${isOverBoard ? '-4px' : ''};
     bottom: ${isOverDesk ? '-4px' : ''};
-    background-color: red;
+    background-color: ${color};
   }
 `;
-
-const nullCss = css``;
 
 export const WrapperBoard = styled.div<WrapperBoardPropsType>`
   width: 240px;
   margin: 8px 0;
   display: flex;
   flex-wrap: wrap;
-  background-color: ${({ theme: { mainBackgroundColor } }) => mainBackgroundColor};
   border-radius: 4px;
   position: relative;
 
+  background-color: ${({ theme: { mainBackgroundColor } }) => mainBackgroundColor};
   cursor: ${({ isDraggable }) => (isDraggable ? 'move' : 'not-allowed')};
 
-  ${({ isAddLayout }) => {
+  ${({ isAddLayout, isOverDesk, isOverBoard, theme: { mainColor } }) => {
+    if (isOverBoard || isOverDesk) {
+      return afterElement(isOverDesk, isOverBoard, mainColor);
+    }
     if (!isAddLayout) {
       return elementShadow;
     }
-    return nullCss;
-  }}
-
-  ${({ isOverDesk, isOverBoard }) => {
-    if (isOverBoard || isOverDesk) {
-      return afterElement(isOverDesk, isOverBoard);
-    }
     return undefined;
-  }} //&:after {
-  //  content: '';
-  //  position: absolute;
-  //  width: 240px;
-  //  height: 1px;
-  //  top: -4px;
-  //  background-color: red;
-  //}
-
-  //&:before {
-  //  content: '';
-  //  position: absolute;
-  //  width: 240px;
-  //  height: 1px;
-  //  bottom: -4px;
-  //  background-color: red;
-  //}
+  }}
 `;

@@ -22,7 +22,7 @@ export const ElementsDesk = ({
   };
 
   return (
-    <div style={{ margin: '30px' }}>
+    <div style={{ margin: '30px', width: '243px', height: '480px' }}>
       {oneBoards.map(board => {
         const BoardComponent = BOARD_COMPONENTS[board.type];
         return (
