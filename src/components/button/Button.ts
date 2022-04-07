@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 type ButtonPropsType = {
   typeButton?: 'long' | 'default' | 'medium' | 'small';
+  cursor?: string;
 };
 
 export const Button = styled.div<ButtonPropsType>`
@@ -31,19 +32,19 @@ export const Button = styled.div<ButtonPropsType>`
   align-items: center;
   justify-content: center;
   border-radius: 6px;
-  cursor: pointer;
+  //cursor: ${({ cursor }) => cursor || 'pointer'};
   margin: 4px;
-
-  &:hover {
-    border: 2px solid
-      ${({ typeButton, theme: { mainColor, mainBorderColor } }) =>
-        typeButton === 'long' ? mainBorderColor : mainColor};
-  }
-
-  &:active {
-    ${({ typeButton, theme: { mainColor, mainBackgroundColor, mainBorderColor } }) => `
-      background:  ${typeButton === 'long' ? mainBorderColor : mainColor};
-      color: ${typeButton === 'long' ? mainColor : mainBackgroundColor};
-        `}
-  }
 `;
+
+// &:hover {
+//   border: 2px solid
+//     ${({ typeButton, theme: { mainColor, mainBorderColor } }) =>
+//       typeButton === 'long' ? mainBorderColor : mainColor};
+// }
+
+// &:active {
+//   ${({ typeButton, theme: { mainColor, mainBackgroundColor, mainBorderColor } }) => `
+//     background:  ${typeButton === 'long' ? mainBorderColor : mainColor};
+//     color: ${typeButton === 'long' ? mainColor : mainBackgroundColor};
+//       `}
+// }

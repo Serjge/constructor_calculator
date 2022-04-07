@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, DragEvent, SetStateAction, Dispatch } from 'react';
 
 import { Wrapper } from 'components/desks/layoutDesk/style';
 import { BOARD_COMPONENTS } from 'const';
@@ -9,11 +9,11 @@ import { sortBoards } from 'utils';
 
 type LayoutDeskPropsType = {
   twoBoards: BoardType[];
-  setTwoBoards: React.Dispatch<React.SetStateAction<BoardType[]>>;
-  setOneBoards: React.Dispatch<React.SetStateAction<BoardType[]>>;
+  setTwoBoards: Dispatch<SetStateAction<BoardType[]>>;
+  setOneBoards: Dispatch<SetStateAction<BoardType[]>>;
   oneBoards: BoardType[];
-  currentItem: BoardType | null;
-  setCurrentItem: React.Dispatch<React.SetStateAction<BoardType | null>>;
+  currentBoard: BoardType | null;
+  setCurrentBoard: Dispatch<SetStateAction<BoardType | null>>;
 };
 
 const ZERO = 0;
@@ -21,80 +21,97 @@ const ZERO = 0;
 export const LayoutDesk = ({
   setOneBoards,
   oneBoards,
-  currentItem,
-  setCurrentItem,
+  currentBoard,
+  setCurrentBoard,
   twoBoards,
   setTwoBoards,
 }: LayoutDeskPropsType): ReactElement => {
-  const dragOverHandler = (e: React.DragEvent<HTMLDivElement>): void => {
+  const dragOverHandler = (e: DragEvent<HTMLDivElement>): void => {
     e.preventDefault();
     const { currency } = e.currentTarget.dataset;
     if (currency === 'emptyDesk') {
       e.currentTarget.style.background = ' #F0F9FF';
     }
+    if (currency === 'numberDisplay') {
+      e.currentTarget.style.cursor = 'not-allowed';
+      // e.currentTarget.style.background = ' red ';
+    }
   };
 
-  const dragLeaveHandler = (e: React.DragEvent<HTMLDivElement>): void => {
+  const dragLeaveHandler = (e: DragEvent<HTMLDivElement>): void => {
     const { currency } = e.currentTarget.dataset;
     if (currency === 'emptyDesk') {
       e.currentTarget.style.background = 'none';
     }
   };
 
-  const dragEndHandler = (e: React.DragEvent<HTMLDivElement>): void => {
+  const dragEndHandler = (e: DragEvent<HTMLDivElement>): void => {
     e.currentTarget.style.background = 'none';
   };
 
-  const dropHandler = (e: React.DragEvent<HTMLDivElement>, board: BoardType): void => {
+  const dropHandler = (e: DragEvent<HTMLDivElement>, draggableBoard: BoardType): void => {
     e.preventDefault();
     e.currentTarget.style.background = 'none';
 
-    if (currentItem!.isAddLayout) {
+    if (currentBoard!.isAddLayout) {
       setTwoBoards(
-        twoBoards.map(item => {
-          if (item.id === board!.id) {
-            return { ...item, order: currentItem!.order };
+        twoBoards.map(board => {
+          if (board.type === 'numberDisplay') {
+            e.currentTarget.style.cursor = 'not-allowed';
+            return board;
           }
-          if (item.id === currentItem!.id) {
-            return { ...item, order: board!.order };
+          if (board.id === draggableBoard!.id) {
+            return { ...board, order: currentBoard!.order };
           }
-          return item;
+          if (board.id === currentBoard!.id) {
+            return { ...board, order: draggableBoard!.order };
+          }
+          return board;
         }),
       );
     }
   };
 
-  const onDoubleClick = (task: BoardType): void => {
-    setTwoBoards(twoBoards.filter(item => item.id !== task.id));
+  const onDoubleClick = (draggableBoard: BoardType): void => {
+    setTwoBoards(twoBoards.filter(item => item.id !== draggableBoard.id));
     setOneBoards(
-      oneBoards.map(item => (item.id === task.id ? { ...item, isDisable: false } : item)),
+      oneBoards.map(board =>
+        board.id === draggableBoard.id ? { ...board, isDisable: false } : board,
+      ),
     );
   };
 
-  const dropLayoutDeskHandler = (e: React.DragEvent<HTMLDivElement>): void => {
+  const dropLayoutDeskHandler = (e: DragEvent<HTMLDivElement>): void => {
     e.preventDefault();
-    if (currentItem) {
-      if (!currentItem.isAddLayout) {
-        twoBoards.push(currentItem);
+    if (currentBoard) {
+      if (!currentBoard.isAddLayout) {
+        if (currentBoard.type === 'numberDisplay') {
+          twoBoards.unshift(currentBoard);
+        } else {
+          twoBoards.push(currentBoard);
+        }
         setOneBoards(
-          oneBoards.map(item =>
-            item.id === currentItem.id ? { ...item, isDisable: true } : item,
+          oneBoards.map(board =>
+            board.id === currentBoard!.id
+              ? { ...board, isDisable: true, isAddLayout: true }
+              : board,
           ),
         );
+
         setTwoBoards(
-          twoBoards.map(item =>
-            item.id === currentItem.id ? { ...item, isAddLayout: true } : item,
+          twoBoards.map(board =>
+            board.id === currentBoard.id ? { ...board, isAddLayout: true } : board,
           ),
         );
       }
     }
   };
   const dragStartHandler = (
-    e: React.DragEvent<HTMLDivElement>,
+    e: DragEvent<HTMLDivElement>,
     board: number,
-    item: BoardType,
+    draggableBoard: BoardType,
   ): void => {
-    setCurrentItem(item);
+    setCurrentBoard(draggableBoard);
   };
 
   if (twoBoards.length === ZERO) {
@@ -102,7 +119,7 @@ export const LayoutDesk = ({
       <Wrapper
         onDrop={dropLayoutDeskHandler}
         onDragOver={e => dragOverHandler(e)}
-        onDragLeave={(e: React.DragEvent<HTMLDivElement>) => dragLeaveHandler(e)}
+        onDragLeave={(e: DragEvent<HTMLDivElement>) => dragLeaveHandler(e)}
         data-currency="emptyDesk"
       >
         <Leaf />
@@ -117,26 +134,27 @@ export const LayoutDesk = ({
     <div
       style={{ margin: '30px', width: '243px', height: '480px' }}
       onDrop={dropLayoutDeskHandler}
-      onDragOver={(e: React.DragEvent<HTMLDivElement>) => dragOverHandler(e)}
+      onDragOver={(e: DragEvent<HTMLDivElement>) => dragOverHandler(e)}
       data-currency="filledDesk"
     >
       {twoBoards.sort(sortBoards).map(item => {
         const BoardComponent = BOARD_COMPONENTS[item.type];
+        const isDraggableNumberDisplay = item.type !== 'numberDisplay';
         return (
           <BoardComponent
             key={item.id}
             data-currency={item.dataCurrency}
             onDoubleClick={() => onDoubleClick(item)}
             style={{ opacity: item.isDisable ? '0.5' : '1' }}
-            onDragOver={(e: React.DragEvent<HTMLDivElement>) => dragOverHandler(e)}
-            onDragLeave={(e: React.DragEvent<HTMLDivElement>) => dragLeaveHandler(e)}
-            onDragStart={(e: React.DragEvent<HTMLDivElement>) =>
+            onDragOver={(e: DragEvent<HTMLDivElement>) => dragOverHandler(e)}
+            onDragLeave={(e: DragEvent<HTMLDivElement>) => dragLeaveHandler(e)}
+            onDragStart={(e: DragEvent<HTMLDivElement>) =>
               dragStartHandler(e, Desks.Layout, item)
             }
-            onDragEnd={(e: React.DragEvent<HTMLDivElement>) => dragEndHandler(e)}
-            onDrop={(e: React.DragEvent<HTMLDivElement>) => dropHandler(e, item)}
-            onDragCapture={(e: React.DragEvent<HTMLDivElement>) => dragEndHandler(e)}
-            draggable={!item.isDisable}
+            onDragEnd={(e: DragEvent<HTMLDivElement>) => dragEndHandler(e)}
+            onDrop={(e: DragEvent<HTMLDivElement>) => dropHandler(e, item)}
+            onDragCapture={(e: DragEvent<HTMLDivElement>) => dragEndHandler(e)}
+            draggable={isDraggableNumberDisplay}
           />
         );
       })}
