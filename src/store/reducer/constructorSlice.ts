@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { Board } from 'enum';
-import { BoardType } from 'types';
+import { BoardType, ComponentsBoardsType } from 'types';
 
 export type ConstructorState = {
   calculatorElements: BoardType[];
@@ -95,6 +95,24 @@ export const constructorSlice = createSlice({
       );
       state.calculatorElements[index].isDisable = true;
       state.calculatorElements[index].isAddLayout = true;
+    },
+    deleteBoard: (state, action: PayloadAction<string>) => {
+      const index = state.calculatorElements.findIndex(({ id }) => id === action.payload);
+      state.calculatorElements[index].isDisable = false;
+      state.calculatorElements[index].isAddLayout = false;
+
+      state.selectedElements = state.selectedElements.filter(
+        ({ id }) => id !== action.payload,
+      );
+    },
+    setOverBoard: (
+      state,
+      action: PayloadAction<{ isOverBoard: boolean; typeBoard: ComponentsBoardsType }>,
+    ) => {
+      const { typeBoard, isOverBoard } = action.payload;
+
+      const index = state.selectedElements.findIndex(({ type }) => type === typeBoard);
+      state.selectedElements[index].isOverBoard = isOverBoard;
     },
   },
 });

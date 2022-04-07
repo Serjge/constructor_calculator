@@ -5,11 +5,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Wrapper } from './style';
 
 import { BOARD_COMPONENTS } from 'const';
-import { Desks } from 'enum';
+import { Board, Desks } from 'enum';
 import { Leaf } from 'icon/Leaf';
-import { addBoard, setCurrentBoardDragId } from 'store/action';
+import { addBoard, deleteBoard, setCurrentBoardDragId, setOverBoard } from 'store/action';
 import { selectCalculatorElements } from 'store/selectors';
-import { selectCurrentBoardDragId } from 'store/selectors/selectConstructor';
+import {
+  selectCurrentBoardDragId,
+  selectSelectedElements,
+} from 'store/selectors/selectConstructor';
 import { BoardType } from 'types';
 import { sortBoards } from 'utils';
 
@@ -31,7 +34,7 @@ export const LayoutDesk = ({
   const dispatch = useDispatch();
 
   const boards = useSelector(selectCalculatorElements);
-  // const boards2 = useSelector(selectSelectedElements);
+  const boards2 = useSelector(selectSelectedElements);
   const currentBoardDragId = useSelector(selectCurrentBoardDragId);
 
   const currentBoard = boards.find(({ id }) => currentBoardDragId === id);
@@ -43,25 +46,37 @@ export const LayoutDesk = ({
       e.currentTarget.style.background = ' #F0F9FF';
     }
     if (currency === 'operators') {
+      const { isOverBoard } = boards2.find(({ type }) => type === Board.Operators)!;
       setTwoBoards(
         twoBoards.map(board =>
           board.type === 'operators' ? { ...board, isOverBoard: true } : board,
         ),
       );
+      if (isOverBoard) {
+        dispatch(setOverBoard({ isOverBoard: true, typeBoard: Board.Operators }));
+      }
     }
     if (currency === 'numbers') {
+      const { isOverBoard } = boards2.find(({ type }) => type === Board.Numbers)!;
       setTwoBoards(
         twoBoards.map(board =>
           board.type === 'numbers' ? { ...board, isOverBoard: true } : board,
         ),
       );
+      if (isOverBoard) {
+        dispatch(setOverBoard({ isOverBoard: true, typeBoard: Board.Numbers }));
+      }
     }
     if (currency === 'equalsSing') {
+      const { isOverBoard } = boards2.find(({ type }) => type === Board.EqualsSing)!;
       setTwoBoards(
         twoBoards.map(board =>
           board.type === 'equalsSing' ? { ...board, isOverBoard: true } : board,
         ),
       );
+      if (isOverBoard) {
+        dispatch(setOverBoard({ isOverBoard: true, typeBoard: Board.EqualsSing }));
+      }
     }
 
     if (!currentBoard!.isAddLayout) {
@@ -83,26 +98,38 @@ export const LayoutDesk = ({
     if (currency === 'emptyDesk') {
       e.currentTarget.style.background = 'none';
     }
-    if (currency === 'operators') {
+    if (currency === Board.Operators) {
+      const { isOverBoard } = boards2.find(({ type }) => type === Board.Operators)!;
       setTwoBoards(
         twoBoards.map(board =>
           board.type === 'operators' ? { ...board, isOverBoard: false } : board,
         ),
       );
+      if (isOverBoard) {
+        dispatch(setOverBoard({ isOverBoard: false, typeBoard: Board.Operators }));
+      }
     }
-    if (currency === 'numbers') {
+    if (currency === Board.Numbers) {
+      const { isOverBoard } = boards2.find(({ type }) => type === Board.Numbers)!;
       setTwoBoards(
         twoBoards.map(board =>
           board.type === 'numbers' ? { ...board, isOverBoard: false } : board,
         ),
       );
+      if (isOverBoard) {
+        dispatch(setOverBoard({ isOverBoard: false, typeBoard: Board.Numbers }));
+      }
     }
-    if (currency === 'equalsSing') {
+    if (currency === Board.EqualsSing) {
+      const { isOverBoard } = boards2.find(({ type }) => type === Board.EqualsSing)!;
       setTwoBoards(
         twoBoards.map(board =>
           board.type === 'equalsSing' ? { ...board, isOverBoard: false } : board,
         ),
       );
+      if (isOverBoard) {
+        dispatch(setOverBoard({ isOverBoard: false, typeBoard: Board.EqualsSing }));
+      }
     }
   };
 
@@ -142,16 +169,15 @@ export const LayoutDesk = ({
     dispatch(setCurrentBoardDragId(null));
   };
 
-  const onDoubleClick = (draggableBoard: BoardType): void => {
-    setTwoBoards(twoBoards.filter(item => item.id !== draggableBoard.id));
+  const onDoubleClick = (boardId: string): void => {
+    setTwoBoards(twoBoards.filter(item => item.id !== boardId));
 
     setOneBoards(
       oneBoards.map(board =>
-        board.id === draggableBoard.id
-          ? { ...board, isDisable: false, isAddLayout: false }
-          : board,
+        board.id === boardId ? { ...board, isDisable: false, isAddLayout: false } : board,
       ),
     );
+    dispatch(deleteBoard(boardId));
   };
 
   const dropLayoutDeskHandler = (e: DragEvent<HTMLDivElement>): void => {
@@ -235,7 +261,7 @@ export const LayoutDesk = ({
             isDraggable={!board.isDisable}
             key={board.id}
             data-currency={board.dataCurrency}
-            onDoubleClick={() => onDoubleClick(board)}
+            onDoubleClick={() => onDoubleClick(board.id)}
             onDragOver={(e: DragEvent<HTMLDivElement>) => dragOverHandler(e)}
             onDragLeave={(e: DragEvent<HTMLDivElement>) => dragLeaveHandler(e)}
             onDragStart={(e: DragEvent<HTMLDivElement>) =>
