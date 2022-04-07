@@ -1,10 +1,18 @@
-import { ReactElement } from 'react';
+import { HTMLAttributes, ReactElement } from 'react';
 
 import { NumberDisplay } from 'components/index';
 import { WrapperBoard } from 'style';
 
-export const NumberDisplayBoard = ({ ...props }): ReactElement => (
-  <WrapperBoard {...props}>
+type NumberBoardPropsType = HTMLAttributes<HTMLElement> & {
+  isAddLayout?: boolean;
+  isDraggable?: boolean;
+};
+export const NumberDisplayBoard = ({
+  isAddLayout,
+  isDraggable,
+  ...props
+}: NumberBoardPropsType): ReactElement => (
+  <WrapperBoard isAddLayout={isAddLayout} isDraggable={isDraggable} {...props}>
     <NumberDisplay />
   </WrapperBoard>
 );

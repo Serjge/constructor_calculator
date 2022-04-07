@@ -27,6 +27,7 @@ export const ElementsDesk = ({
         const BoardComponent = BOARD_COMPONENTS[board.type];
         return (
           <BoardComponent
+            isDraggable={!board.isDisable}
             data-currency={board.dataCurrency}
             role="presentation"
             key={board.id}

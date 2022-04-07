@@ -1,6 +1,7 @@
 import React, { ReactElement, DragEvent, SetStateAction, Dispatch } from 'react';
 
-import { Wrapper } from 'components/desks/layoutDesk/style';
+import { Wrapper } from './style';
+
 import { BOARD_COMPONENTS } from 'const';
 import { Desks } from 'enum';
 import { Leaf } from 'icon/Leaf';
@@ -32,10 +33,6 @@ export const LayoutDesk = ({
     if (currency === 'emptyDesk') {
       e.currentTarget.style.background = ' #F0F9FF';
     }
-    if (currency === 'numberDisplay') {
-      e.currentTarget.style.cursor = 'not-allowed';
-      // e.currentTarget.style.background = ' red ';
-    }
   };
 
   const dragLeaveHandler = (e: DragEvent<HTMLDivElement>): void => {
@@ -57,7 +54,6 @@ export const LayoutDesk = ({
       setTwoBoards(
         twoBoards.map(board => {
           if (board.type === 'numberDisplay') {
-            e.currentTarget.style.cursor = 'not-allowed';
             return board;
           }
           if (board.id === draggableBoard!.id) {
@@ -100,7 +96,13 @@ export const LayoutDesk = ({
 
         setTwoBoards(
           twoBoards.map(board =>
-            board.id === currentBoard.id ? { ...board, isAddLayout: true } : board,
+            board.id === currentBoard.id
+              ? {
+                  ...board,
+                  isAddLayout: true,
+                  isDisable: currentBoard.type === 'numberDisplay',
+                }
+              : board,
           ),
         );
       }
@@ -137,22 +139,23 @@ export const LayoutDesk = ({
       onDragOver={(e: DragEvent<HTMLDivElement>) => dragOverHandler(e)}
       data-currency="filledDesk"
     >
-      {twoBoards.sort(sortBoards).map(item => {
-        const BoardComponent = BOARD_COMPONENTS[item.type];
-        const isDraggableNumberDisplay = item.type !== 'numberDisplay';
+      {twoBoards.sort(sortBoards).map(board => {
+        const BoardComponent = BOARD_COMPONENTS[board.type];
+        const isDraggableNumberDisplay = board.type !== 'numberDisplay';
         return (
           <BoardComponent
-            key={item.id}
-            data-currency={item.dataCurrency}
-            onDoubleClick={() => onDoubleClick(item)}
-            style={{ opacity: item.isDisable ? '0.5' : '1' }}
+            isAddLayout={board.isAddLayout}
+            isDraggable={!board.isDisable}
+            key={board.id}
+            data-currency={board.dataCurrency}
+            onDoubleClick={() => onDoubleClick(board)}
             onDragOver={(e: DragEvent<HTMLDivElement>) => dragOverHandler(e)}
             onDragLeave={(e: DragEvent<HTMLDivElement>) => dragLeaveHandler(e)}
             onDragStart={(e: DragEvent<HTMLDivElement>) =>
-              dragStartHandler(e, Desks.Layout, item)
+              dragStartHandler(e, Desks.Layout, board)
             }
             onDragEnd={(e: DragEvent<HTMLDivElement>) => dragEndHandler(e)}
-            onDrop={(e: DragEvent<HTMLDivElement>) => dropHandler(e, item)}
+            onDrop={(e: DragEvent<HTMLDivElement>) => dropHandler(e, board)}
             onDragCapture={(e: DragEvent<HTMLDivElement>) => dragEndHandler(e)}
             draggable={isDraggableNumberDisplay}
           />

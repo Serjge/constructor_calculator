@@ -2,8 +2,8 @@ import { ReactElement } from 'react';
 
 import { Wrapper } from 'components/numberDisplay/style';
 
-export const NumberDisplay = (): ReactElement => (
-  <Wrapper>
+export const NumberDisplay = ({ ...props }): ReactElement => (
+  <Wrapper {...props}>
     <span>0.022</span>
   </Wrapper>
 );
