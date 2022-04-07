@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+import { Board } from 'enum';
 import { BoardType } from 'types';
 
 export type ConstructorState = {
@@ -72,6 +73,28 @@ export const constructorSlice = createSlice({
     },
     setCurrentBoardDragId: (state, action: PayloadAction<string | null>) => {
       state.currentBoardDragId = action.payload;
+    },
+    addBoard: (state, action: PayloadAction<BoardType>) => {
+      if (action.payload.type === Board.NumberDisplay) {
+        state.selectedElements.unshift({
+          ...action.payload,
+          isAddLayout: true,
+          isDisable: true,
+          isLastElementLayoutDesk: false,
+        });
+      } else {
+        state.selectedElements.push({
+          ...action.payload,
+          isAddLayout: true,
+          isLastElementLayoutDesk: false,
+        });
+      }
+
+      const index = state.calculatorElements.findIndex(
+        ({ id }) => id === action.payload.id,
+      );
+      state.calculatorElements[index].isDisable = true;
+      state.calculatorElements[index].isAddLayout = true;
     },
   },
 });

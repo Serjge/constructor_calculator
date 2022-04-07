@@ -7,7 +7,7 @@ import { Wrapper } from './style';
 import { BOARD_COMPONENTS } from 'const';
 import { Desks } from 'enum';
 import { Leaf } from 'icon/Leaf';
-import { setCurrentBoardDragId } from 'store/action';
+import { addBoard, setCurrentBoardDragId } from 'store/action';
 import { selectCalculatorElements } from 'store/selectors';
 import { selectCurrentBoardDragId } from 'store/selectors/selectConstructor';
 import { BoardType } from 'types';
@@ -159,6 +159,7 @@ export const LayoutDesk = ({
 
     if (currentBoard) {
       if (!currentBoard.isAddLayout) {
+        dispatch(addBoard(currentBoard));
         if (currentBoard.type === 'numberDisplay') {
           twoBoards.unshift(currentBoard);
         } else {
@@ -189,12 +190,15 @@ export const LayoutDesk = ({
     }
     dispatch(setCurrentBoardDragId(null));
   };
+
   const dragStartHandler = (
     e: DragEvent<HTMLDivElement>,
     board: number,
     draggableBoard: BoardType,
   ): void => {
-    dispatch(setCurrentBoardDragId(draggableBoard.id));
+    if (currentBoardDragId !== draggableBoard.id) {
+      dispatch(setCurrentBoardDragId(draggableBoard.id));
+    }
   };
 
   if (twoBoards.length === ZERO) {
