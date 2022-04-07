@@ -1,4 +1,4 @@
-import React, { Dispatch, ReactElement } from 'react';
+import React, { ReactElement } from 'react';
 
 import { useDispatch } from 'react-redux';
 
@@ -9,11 +9,9 @@ import { BoardType } from 'types';
 
 type DeskWithCalculatorElementsPropsType = {
   oneBoards: BoardType[];
-  setCurrentItem: Dispatch<React.SetStateAction<BoardType | null>>;
 };
 
 export const ElementsDesk = ({
-  setCurrentItem,
   oneBoards,
 }: DeskWithCalculatorElementsPropsType): ReactElement => {
   const dispatch = useDispatch();
@@ -24,7 +22,6 @@ export const ElementsDesk = ({
     item: BoardType,
   ): void => {
     dispatch(setCurrentBoardDragId(item.id));
-    setCurrentItem(item);
   };
 
   return (

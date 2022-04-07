@@ -1,6 +1,6 @@
-import React, { ReactElement, DragEvent, SetStateAction, Dispatch } from 'react';
+import React, { Dispatch, DragEvent, ReactElement, SetStateAction } from 'react';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Wrapper } from './style';
 
@@ -8,6 +8,8 @@ import { BOARD_COMPONENTS } from 'const';
 import { Desks } from 'enum';
 import { Leaf } from 'icon/Leaf';
 import { setCurrentBoardDragId } from 'store/action';
+import { selectCalculatorElements } from 'store/selectors';
+import { selectCurrentBoardDragId } from 'store/selectors/selectConstructor';
 import { BoardType } from 'types';
 import { sortBoards } from 'utils';
 
@@ -16,8 +18,6 @@ type LayoutDeskPropsType = {
   setTwoBoards: Dispatch<SetStateAction<BoardType[]>>;
   setOneBoards: Dispatch<SetStateAction<BoardType[]>>;
   oneBoards: BoardType[];
-  currentBoard: BoardType | null;
-  setCurrentBoard: Dispatch<SetStateAction<BoardType | null>>;
 };
 
 const ZERO = 0;
@@ -25,12 +25,16 @@ const ZERO = 0;
 export const LayoutDesk = ({
   setOneBoards,
   oneBoards,
-  currentBoard,
-  setCurrentBoard,
   twoBoards,
   setTwoBoards,
 }: LayoutDeskPropsType): ReactElement => {
   const dispatch = useDispatch();
+
+  const boards = useSelector(selectCalculatorElements);
+  // const boards2 = useSelector(selectSelectedElements);
+  const currentBoardDragId = useSelector(selectCurrentBoardDragId);
+
+  const currentBoard = boards.find(({ id }) => currentBoardDragId === id);
 
   const dragOverHandler = (e: DragEvent<HTMLDivElement>): void => {
     e.preventDefault();
@@ -108,7 +112,6 @@ export const LayoutDesk = ({
 
   const dropHandler = (e: DragEvent<HTMLDivElement>, draggableBoard: BoardType): void => {
     e.preventDefault();
-    dispatch(setCurrentBoardDragId(null));
     e.currentTarget.style.background = 'none';
     if (currentBoard!.isAddLayout) {
       setTwoBoards(
@@ -136,6 +139,7 @@ export const LayoutDesk = ({
         }),
       );
     }
+    dispatch(setCurrentBoardDragId(null));
   };
 
   const onDoubleClick = (draggableBoard: BoardType): void => {
@@ -152,7 +156,7 @@ export const LayoutDesk = ({
 
   const dropLayoutDeskHandler = (e: DragEvent<HTMLDivElement>): void => {
     e.preventDefault();
-    dispatch(setCurrentBoardDragId(null));
+
     if (currentBoard) {
       if (!currentBoard.isAddLayout) {
         if (currentBoard.type === 'numberDisplay') {
@@ -169,19 +173,21 @@ export const LayoutDesk = ({
         );
 
         setTwoBoards(
-          twoBoards.map(board =>
-            board.id === currentBoard.id
-              ? {
-                  ...board,
-                  isAddLayout: true,
-                  isDisable: currentBoard.type === 'numberDisplay',
-                  isLastElementLayoutDesk: false,
-                }
-              : { ...board, isLastElementLayoutDesk: false },
-          ),
+          twoBoards.map(board => {
+            if (board.id === currentBoard.id) {
+              return {
+                ...board,
+                isAddLayout: true,
+                isDisable: currentBoard.type === 'numberDisplay',
+                isLastElementLayoutDesk: false,
+              };
+            }
+            return { ...board, isLastElementLayoutDesk: false };
+          }),
         );
       }
     }
+    dispatch(setCurrentBoardDragId(null));
   };
   const dragStartHandler = (
     e: DragEvent<HTMLDivElement>,
@@ -189,7 +195,6 @@ export const LayoutDesk = ({
     draggableBoard: BoardType,
   ): void => {
     dispatch(setCurrentBoardDragId(draggableBoard.id));
-    setCurrentBoard(draggableBoard);
   };
 
   if (twoBoards.length === ZERO) {

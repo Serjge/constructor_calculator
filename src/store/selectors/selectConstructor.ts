@@ -9,3 +9,6 @@ export const selectSelectedElements = (state: RootState): BoardType[] =>
 
 export const selectIsConstructor = (state: RootState): boolean =>
   state.constructorCalc.isConstructor;
+
+export const selectCurrentBoardDragId = (state: RootState): string | null =>
+  state.constructorCalc.currentBoardDragId;

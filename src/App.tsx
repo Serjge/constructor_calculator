@@ -3,16 +3,15 @@ import React, { ReactElement, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import { ElementsDesk, LayoutDesk } from 'components';
-import { selectCalculatorElements } from 'store/selectors';
+import { selectCalculatorElements, selectSelectedElements } from 'store/selectors';
 import { BoardType } from 'types';
 
 export const App = (): ReactElement => {
   const boards = useSelector(selectCalculatorElements);
+  const boards2 = useSelector(selectSelectedElements);
 
   const [oneBoards, setOneBoards] = useState(boards);
-  const [twoBoards, setTwoBoards] = useState<BoardType[]>([]);
-
-  const [currentBoard, setCurrentBoard] = useState<BoardType | null>(null);
+  const [twoBoards, setTwoBoards] = useState<BoardType[]>(boards2);
 
   return (
     <div
@@ -28,12 +27,10 @@ export const App = (): ReactElement => {
           justifyContent: 'center',
         }}
       >
-        <ElementsDesk oneBoards={oneBoards} setCurrentItem={setCurrentBoard} />
+        <ElementsDesk oneBoards={oneBoards} />
 
         {/* <Toggle /> */}
         <LayoutDesk
-          setCurrentBoard={setCurrentBoard}
-          currentBoard={currentBoard}
           oneBoards={oneBoards}
           setOneBoards={setOneBoards}
           setTwoBoards={setTwoBoards}
