@@ -11,3 +11,5 @@ export const BOARD_COMPONENTS = {
   numbers: NumberBoard,
   operators: OperatorBoard,
 };
+
+export const BOARD_TYPE = ['numbers', 'operators', 'equalsSing'];

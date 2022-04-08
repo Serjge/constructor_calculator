@@ -7,10 +7,9 @@ export const selectSelectedElements = createSelector(selectState, state =>
   state.constructorCalc.selectedElements.slice().sort(sortBoards),
 );
 
-export const selectSortSelectedElements = createSelector([selectSelectedElements], a => {
-  a.slice().sort(sortBoards);
-  return a;
-});
+export const selectSortSelectedElements = createSelector(selectState, state =>
+  state.constructorCalc.selectedElements.slice().sort(sortBoards),
+);
 
 export const selectCalculatorElements = createSelector(
   selectState,
@@ -30,4 +29,9 @@ export const selectCurrentBoardDragId = createSelector(
 export const selectLastBoardId = createSelector(
   selectState,
   state => state.constructorCalc.lastBoardId,
+);
+
+export const selectCurrentBoard = createSelector(
+  [selectCalculatorElements, selectCurrentBoardDragId],
+  (boards, currentBoardDragId) => boards.find(({ id }) => id === currentBoardDragId),
 );

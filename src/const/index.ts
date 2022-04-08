@@ -1,1 +1,1 @@
-export { BOARD_COMPONENTS } from './boardComponents';
+export { BOARD_COMPONENTS, BOARD_TYPE } from './boardComponents';
