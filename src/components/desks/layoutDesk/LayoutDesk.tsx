@@ -1,4 +1,4 @@
-import React, { Dispatch, DragEvent, ReactElement, SetStateAction } from 'react';
+import React, { DragEvent, ReactElement } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -7,35 +7,31 @@ import { Wrapper } from './style';
 import { BOARD_COMPONENTS } from 'const';
 import { Board, Desks } from 'enum';
 import { Leaf } from 'icon/Leaf';
-import { addBoard, deleteBoard, setCurrentBoardDragId, setOverBoard } from 'store/action';
-import { selectCalculatorElements } from 'store/selectors';
 import {
+  addBoard,
+  deleteBoard,
+  setCurrentBoardDragId,
+  setLastElementLayoutDesk,
+  setOrder,
+  setOverBoard,
+} from 'store/action';
+import {
+  selectCalculatorElements,
   selectCurrentBoardDragId,
   selectSelectedElements,
-} from 'store/selectors/selectConstructor';
+} from 'store/selectors';
+import { selectLastBoardId } from 'store/selectors/selectConstructor';
 import { BoardType } from 'types';
-import { sortBoards } from 'utils';
 
-type LayoutDeskPropsType = {
-  twoBoards: BoardType[];
-  setTwoBoards: Dispatch<SetStateAction<BoardType[]>>;
-  setOneBoards: Dispatch<SetStateAction<BoardType[]>>;
-  oneBoards: BoardType[];
-};
+const EMPTY_ARRAY = 0;
 
-const ZERO = 0;
-
-export const LayoutDesk = ({
-  setOneBoards,
-  oneBoards,
-  twoBoards,
-  setTwoBoards,
-}: LayoutDeskPropsType): ReactElement => {
+export const LayoutDesk = (): ReactElement => {
   const dispatch = useDispatch();
 
   const boards = useSelector(selectCalculatorElements);
-  const boards2 = useSelector(selectSelectedElements);
+  const selectedBoards = useSelector(selectSelectedElements);
   const currentBoardDragId = useSelector(selectCurrentBoardDragId);
+  const lastBoardId = useSelector(selectLastBoardId);
 
   const currentBoard = boards.find(({ id }) => currentBoardDragId === id);
 
@@ -46,50 +42,35 @@ export const LayoutDesk = ({
       e.currentTarget.style.background = ' #F0F9FF';
     }
     if (currency === 'operators') {
-      const { isOverBoard } = boards2.find(({ type }) => type === Board.Operators)!;
-      setTwoBoards(
-        twoBoards.map(board =>
-          board.type === 'operators' ? { ...board, isOverBoard: true } : board,
-        ),
-      );
-      if (isOverBoard) {
+      const { isOverBoard } = selectedBoards.find(
+        ({ type }) => type === Board.Operators,
+      )!;
+
+      if (!isOverBoard) {
         dispatch(setOverBoard({ isOverBoard: true, typeBoard: Board.Operators }));
       }
     }
     if (currency === 'numbers') {
-      const { isOverBoard } = boards2.find(({ type }) => type === Board.Numbers)!;
-      setTwoBoards(
-        twoBoards.map(board =>
-          board.type === 'numbers' ? { ...board, isOverBoard: true } : board,
-        ),
-      );
-      if (isOverBoard) {
+      const { isOverBoard } = selectedBoards.find(({ type }) => type === Board.Numbers)!;
+
+      if (!isOverBoard) {
         dispatch(setOverBoard({ isOverBoard: true, typeBoard: Board.Numbers }));
       }
     }
     if (currency === 'equalsSing') {
-      const { isOverBoard } = boards2.find(({ type }) => type === Board.EqualsSing)!;
-      setTwoBoards(
-        twoBoards.map(board =>
-          board.type === 'equalsSing' ? { ...board, isOverBoard: true } : board,
-        ),
-      );
-      if (isOverBoard) {
+      const { isOverBoard } = selectedBoards.find(
+        ({ type }) => type === Board.EqualsSing,
+      )!;
+
+      if (!isOverBoard) {
         dispatch(setOverBoard({ isOverBoard: true, typeBoard: Board.EqualsSing }));
       }
     }
 
-    if (!currentBoard!.isAddLayout) {
-      // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-      const indexLastBoard = twoBoards.length - 1;
-      const lastElement = twoBoards[indexLastBoard];
-      setTwoBoards(
-        twoBoards.map(board =>
-          board.id === lastElement.id
-            ? { ...board, isLastElementLayoutDesk: true }
-            : board,
-        ),
-      );
+    if (!currentBoard!.isAddLayout && !lastBoardId) {
+      if (selectedBoards.length !== EMPTY_ARRAY) {
+        dispatch(setLastElementLayoutDesk({ isLastElementLayoutDesk: true }));
+      }
     }
   };
 
@@ -99,34 +80,26 @@ export const LayoutDesk = ({
       e.currentTarget.style.background = 'none';
     }
     if (currency === Board.Operators) {
-      const { isOverBoard } = boards2.find(({ type }) => type === Board.Operators)!;
-      setTwoBoards(
-        twoBoards.map(board =>
-          board.type === 'operators' ? { ...board, isOverBoard: false } : board,
-        ),
-      );
+      const { isOverBoard } = selectedBoards.find(
+        ({ type }) => type === Board.Operators,
+      )!;
+
       if (isOverBoard) {
         dispatch(setOverBoard({ isOverBoard: false, typeBoard: Board.Operators }));
       }
     }
     if (currency === Board.Numbers) {
-      const { isOverBoard } = boards2.find(({ type }) => type === Board.Numbers)!;
-      setTwoBoards(
-        twoBoards.map(board =>
-          board.type === 'numbers' ? { ...board, isOverBoard: false } : board,
-        ),
-      );
+      const { isOverBoard } = selectedBoards.find(({ type }) => type === Board.Numbers)!;
+
       if (isOverBoard) {
         dispatch(setOverBoard({ isOverBoard: false, typeBoard: Board.Numbers }));
       }
     }
     if (currency === Board.EqualsSing) {
-      const { isOverBoard } = boards2.find(({ type }) => type === Board.EqualsSing)!;
-      setTwoBoards(
-        twoBoards.map(board =>
-          board.type === 'equalsSing' ? { ...board, isOverBoard: false } : board,
-        ),
-      );
+      const { isOverBoard } = selectedBoards.find(
+        ({ type }) => type === Board.EqualsSing,
+      )!;
+
       if (isOverBoard) {
         dispatch(setOverBoard({ isOverBoard: false, typeBoard: Board.EqualsSing }));
       }
@@ -139,44 +112,15 @@ export const LayoutDesk = ({
 
   const dropHandler = (e: DragEvent<HTMLDivElement>, draggableBoard: BoardType): void => {
     e.preventDefault();
+
     e.currentTarget.style.background = 'none';
     if (currentBoard!.isAddLayout) {
-      setTwoBoards(
-        twoBoards.map(board => {
-          if (board.type === 'numberDisplay') {
-            return board;
-          }
-          if (board.id === draggableBoard!.id) {
-            return {
-              ...board,
-              order: currentBoard!.order,
-              isLastElementLayoutDesk: false,
-              isOverBoard: false,
-            };
-          }
-          if (board.id === currentBoard!.id) {
-            return {
-              ...board,
-              order: draggableBoard!.order,
-              isLastElementLayoutDesk: false,
-              isOverBoard: false,
-            };
-          }
-          return { ...board, isLastElementLayoutDesk: false, isOverBoard: false };
-        }),
-      );
+      dispatch(setOrder({ draggableBoardId: draggableBoard.id }));
     }
     dispatch(setCurrentBoardDragId(null));
   };
 
   const onDoubleClick = (boardId: string): void => {
-    setTwoBoards(twoBoards.filter(item => item.id !== boardId));
-
-    setOneBoards(
-      oneBoards.map(board =>
-        board.id === boardId ? { ...board, isDisable: false, isAddLayout: false } : board,
-      ),
-    );
     dispatch(deleteBoard(boardId));
   };
 
@@ -186,32 +130,6 @@ export const LayoutDesk = ({
     if (currentBoard) {
       if (!currentBoard.isAddLayout) {
         dispatch(addBoard(currentBoard));
-        if (currentBoard.type === 'numberDisplay') {
-          twoBoards.unshift(currentBoard);
-        } else {
-          twoBoards.push(currentBoard);
-        }
-        setOneBoards(
-          oneBoards.map(board =>
-            board.id === currentBoard!.id
-              ? { ...board, isDisable: true, isAddLayout: true }
-              : board,
-          ),
-        );
-
-        setTwoBoards(
-          twoBoards.map(board => {
-            if (board.id === currentBoard.id) {
-              return {
-                ...board,
-                isAddLayout: true,
-                isDisable: currentBoard.type === 'numberDisplay',
-                isLastElementLayoutDesk: false,
-              };
-            }
-            return { ...board, isLastElementLayoutDesk: false };
-          }),
-        );
       }
     }
     dispatch(setCurrentBoardDragId(null));
@@ -227,7 +145,7 @@ export const LayoutDesk = ({
     }
   };
 
-  if (twoBoards.length === ZERO) {
+  if (selectedBoards.length === EMPTY_ARRAY) {
     return (
       <Wrapper
         onDrop={dropLayoutDeskHandler}
@@ -250,7 +168,7 @@ export const LayoutDesk = ({
       onDragOver={(e: DragEvent<HTMLDivElement>) => dragOverHandler(e)}
       data-currency="filledDesk"
     >
-      {twoBoards.sort(sortBoards).map(board => {
+      {selectedBoards.map(board => {
         const BoardComponent = BOARD_COMPONENTS[board.type];
         const isDraggableNumberDisplay = board.type !== 'numberDisplay';
         return (

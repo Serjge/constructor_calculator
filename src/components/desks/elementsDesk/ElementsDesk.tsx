@@ -1,20 +1,17 @@
 import React, { ReactElement } from 'react';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { BOARD_COMPONENTS } from 'const';
 import { Desks } from 'enum';
 import { setCurrentBoardDragId } from 'store/action';
+import { selectCalculatorElements } from 'store/selectors';
 import { BoardType } from 'types';
 
-type DeskWithCalculatorElementsPropsType = {
-  oneBoards: BoardType[];
-};
-
-export const ElementsDesk = ({
-  oneBoards,
-}: DeskWithCalculatorElementsPropsType): ReactElement => {
+export const ElementsDesk = (): ReactElement => {
   const dispatch = useDispatch();
+
+  const boards = useSelector(selectCalculatorElements);
 
   const dragStartHandler = (
     e: React.DragEvent<HTMLDivElement>,
@@ -26,7 +23,7 @@ export const ElementsDesk = ({
 
   return (
     <div style={{ margin: '30px', width: '243px', height: '480px' }}>
-      {oneBoards.map(board => {
+      {boards.map(board => {
         const BoardComponent = BOARD_COMPONENTS[board.type];
         return (
           <BoardComponent

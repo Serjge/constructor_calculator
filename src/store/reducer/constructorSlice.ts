@@ -8,6 +8,7 @@ export type ConstructorState = {
   selectedElements: BoardType[];
   isConstructor: boolean;
   currentBoardDragId: string | null;
+  lastBoardId: string | null;
 };
 
 const initialState: ConstructorState = {
@@ -56,46 +57,52 @@ const initialState: ConstructorState = {
   selectedElements: [],
   isConstructor: true,
   currentBoardDragId: null,
+  lastBoardId: null,
 };
+
+const LAST_ELEMENT_ARRAY = 1;
 
 export const constructorSlice = createSlice({
   name: 'constructor',
   initialState,
   reducers: {
-    addElement: (state, action: PayloadAction<string>) => {
-      const board = state.calculatorElements.find(({ id }) => id === action.payload);
-      if (board) {
-        state.selectedElements.push(board);
-      }
-    },
     setIsConstructor: (state, action: PayloadAction<boolean>) => {
       state.isConstructor = action.payload;
     },
+
     setCurrentBoardDragId: (state, action: PayloadAction<string | null>) => {
       state.currentBoardDragId = action.payload;
     },
+
     addBoard: (state, action: PayloadAction<BoardType>) => {
       if (action.payload.type === Board.NumberDisplay) {
         state.selectedElements.unshift({
           ...action.payload,
           isAddLayout: true,
           isDisable: true,
-          isLastElementLayoutDesk: false,
         });
       } else {
         state.selectedElements.push({
           ...action.payload,
           isAddLayout: true,
-          isLastElementLayoutDesk: false,
         });
       }
 
-      const index = state.calculatorElements.findIndex(
+      const boardIndex = state.calculatorElements.findIndex(
         ({ id }) => id === action.payload.id,
       );
-      state.calculatorElements[index].isDisable = true;
-      state.calculatorElements[index].isAddLayout = true;
+
+      if (state.lastBoardId) {
+        const LastBoardIndex = state.calculatorElements.findIndex(
+          ({ id }) => id === state.lastBoardId,
+        );
+        state.selectedElements[LastBoardIndex].isLastElementLayoutDesk = false;
+      }
+
+      state.calculatorElements[boardIndex].isDisable = true;
+      state.calculatorElements[boardIndex].isAddLayout = true;
     },
+
     deleteBoard: (state, action: PayloadAction<string>) => {
       const index = state.calculatorElements.findIndex(({ id }) => id === action.payload);
       state.calculatorElements[index].isDisable = false;
@@ -105,6 +112,7 @@ export const constructorSlice = createSlice({
         ({ id }) => id !== action.payload,
       );
     },
+
     setOverBoard: (
       state,
       action: PayloadAction<{ isOverBoard: boolean; typeBoard: ComponentsBoardsType }>,
@@ -113,6 +121,52 @@ export const constructorSlice = createSlice({
 
       const index = state.selectedElements.findIndex(({ type }) => type === typeBoard);
       state.selectedElements[index].isOverBoard = isOverBoard;
+    },
+
+    setLastElementLayoutDesk: (
+      state,
+      action: PayloadAction<{
+        isLastElementLayoutDesk: boolean;
+      }>,
+    ) => {
+      const { isLastElementLayoutDesk } = action.payload;
+
+      const isCurrentBoardOnLayoutDesk = state.selectedElements.find(
+        ({ id }) => id === state.currentBoardDragId,
+      );
+
+      if (isCurrentBoardOnLayoutDesk === undefined) {
+        const lastBoardId =
+          state.selectedElements[state.selectedElements.length - LAST_ELEMENT_ARRAY].id;
+
+        state.lastBoardId = lastBoardId;
+        const index = state.selectedElements.findIndex(({ id }) => id === lastBoardId);
+        state.selectedElements[index].isLastElementLayoutDesk = isLastElementLayoutDesk;
+      }
+    },
+
+    setOrder: (state, action: PayloadAction<{ draggableBoardId: string }>) => {
+      const { draggableBoardId } = action.payload;
+      const currentBoardId = state.currentBoardDragId;
+
+      const draggableBoardIndex = state.selectedElements.findIndex(
+        ({ id }) => id === draggableBoardId,
+      );
+      const currentBoardIndex = state.selectedElements.findIndex(
+        ({ id }) => id === currentBoardId,
+      );
+
+      const draggableBoardOrder = state.selectedElements[draggableBoardIndex].order;
+
+      const currentBoardOrder = state.selectedElements[currentBoardIndex].order;
+
+      if (draggableBoardId !== '1') {
+        state.selectedElements[currentBoardIndex].order = draggableBoardOrder;
+        state.selectedElements[currentBoardIndex].isOverBoard = false;
+
+        state.selectedElements[draggableBoardIndex].order = currentBoardOrder;
+        state.selectedElements[draggableBoardIndex].isOverBoard = false;
+      }
     },
   },
 });
