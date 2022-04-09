@@ -7,7 +7,7 @@ type NumberDisplayPropsType = {
 };
 
 const WIDTH_NUMBER_DISPLAY = 230;
-const COEFFICIENT = 1.4;
+const COEFFICIENT = 1.35;
 const MIN_LENGTH_NUMBER = 10;
 
 export const NumberDisplay = memo(

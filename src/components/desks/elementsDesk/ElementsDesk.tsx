@@ -30,8 +30,8 @@ export const ElementsDesk = (): ReactElement => {
             role="presentation"
             isDisable={isDisable}
             draggable={!isDisable}
-            isDraggable={isConstructor && !isDisable}
             data-currency={dataCurrency}
+            isDraggable={isConstructor && !isDisable}
             onDragStart={(e: DragEvent<HTMLDivElement>) => handleDragStart(e, id)}
           />
         );

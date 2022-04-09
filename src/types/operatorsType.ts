@@ -1,1 +1,1 @@
-export type OperatorType = '/' | '*' | '-' | '+';
+export type OperatorType = '/' | 'X' | '-' | '+';

@@ -23,12 +23,16 @@ export const calculatorSlice = createSlice({
     },
     setOperator: (state, action: PayloadAction<OperatorType | null>) => {
       state.operator = action.payload;
+      state.saveValue = state.visibleValue;
     },
     saveValue: state => {
       state.saveValue = state.visibleValue;
     },
     getResult: state => {
       state.visibleValue = state.saveValue + state.visibleValue;
+    },
+    resetValue: state => {
+      state.visibleValue = '';
     },
   },
 });
