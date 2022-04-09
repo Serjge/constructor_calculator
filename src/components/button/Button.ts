@@ -1,8 +1,10 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 type ButtonPropsType = {
   typeButton?: 'long' | 'default' | 'medium' | 'small';
   cursor?: string;
+  isVisible?: boolean;
+  isAddLayout?: boolean;
 };
 
 export const Button = styled.div<ButtonPropsType>`
@@ -32,19 +34,29 @@ export const Button = styled.div<ButtonPropsType>`
   align-items: center;
   justify-content: center;
   border-radius: 6px;
-  //cursor: ${({ cursor }) => cursor || 'pointer'};
+
+  ${({
+    isAddLayout,
+    isVisible,
+    typeButton,
+    cursor,
+    theme: { mainColor, mainBorderColor, mainBackgroundColor },
+  }) => {
+    if (!isVisible && isAddLayout) {
+      return css`
+        cursor: pointer;
+
+        &:hover {
+          border: 2px solid ${typeButton === 'long' ? mainBorderColor : mainColor};
+        }
+
+        &:active {
+          background: ${typeButton === 'long' ? mainBorderColor : mainColor};
+          color: ${typeButton === 'long' ? mainColor : mainBackgroundColor};
+        }
+      `;
+    }
+    return cursor;
+  }};
   margin: 4px;
 `;
-
-// &:hover {
-//   border: 2px solid
-//     ${({ typeButton, theme: { mainColor, mainBorderColor } }) =>
-//       typeButton === 'long' ? mainBorderColor : mainColor};
-// }
-
-// &:active {
-//   ${({ typeButton, theme: { mainColor, mainBackgroundColor, mainBorderColor } }) => `
-//     background:  ${typeButton === 'long' ? mainBorderColor : mainColor};
-//     color: ${typeButton === 'long' ? mainColor : mainBackgroundColor};
-//       `}
-// }

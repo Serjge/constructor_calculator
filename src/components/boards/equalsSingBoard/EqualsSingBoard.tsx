@@ -1,20 +1,22 @@
-import React, { HTMLAttributes, memo, ReactElement } from 'react';
+import { memo, ReactElement } from 'react';
+
+import { useSelector } from 'react-redux';
 
 import { Button } from 'components';
+import { selectIsConstructor } from 'store/selectors';
 import { WrapperBoard } from 'style';
-
-type EqualsSingBoardPropsType = HTMLAttributes<HTMLElement> & {
-  isAddLayout?: boolean;
-  isDraggable?: boolean;
-  isOverDesk?: boolean;
-  isOverBoard?: boolean;
-  isDisable?: boolean;
-};
+import { BoardPropsType } from 'types';
 
 export const EqualsSingBoard = memo(
-  ({ ...props }: EqualsSingBoardPropsType): ReactElement => (
-    <WrapperBoard {...props}>
-      <Button typeButton="long">=</Button>
-    </WrapperBoard>
-  ),
+  ({ isAddLayout, ...props }: BoardPropsType): ReactElement => {
+    const isConstructor = useSelector(selectIsConstructor);
+
+    return (
+      <WrapperBoard isAddLayout={isAddLayout} isVisible={isConstructor} {...props}>
+        <Button isAddLayout={isAddLayout} isVisible={isConstructor} typeButton="long">
+          =
+        </Button>
+      </WrapperBoard>
+    );
+  },
 );

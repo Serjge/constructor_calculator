@@ -1,17 +1,13 @@
 import styled from 'styled-components';
 
-type WrapperPropsType = {
-  isEmpty?: boolean;
-};
-
-export const Wrapper = styled.div<WrapperPropsType>`
+export const Wrapper = styled.div`
   margin: 30px;
   display: flex;
+  width: 243px;
+  height: 480px;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  width: 243px;
-  height: 480px;
 
   font-style: normal;
   font-weight: 400;

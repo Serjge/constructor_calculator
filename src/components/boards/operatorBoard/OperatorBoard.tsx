@@ -1,26 +1,31 @@
-import { HTMLAttributes, memo, ReactElement } from 'react';
+import { memo, ReactElement } from 'react';
+
+import { useSelector } from 'react-redux';
 
 import { Button } from 'components';
+import { selectIsConstructor } from 'store/selectors';
 import { WrapperBoard } from 'style';
-
-type OperatorBoardPropsType = HTMLAttributes<HTMLElement> & {
-  isAddLayout?: boolean;
-  isDraggable?: boolean;
-  isOverDesk?: boolean;
-  isOverBoard?: boolean;
-  isDisable?: boolean;
-};
+import { BoardPropsType } from 'types';
 
 const OPERATORS = ['/', 'X', '-', '+'];
 
 export const OperatorBoard = memo(
-  ({ ...props }: OperatorBoardPropsType): ReactElement => (
-    <WrapperBoard {...props}>
-      {OPERATORS.map(number => (
-        <Button typeButton="small" key={number}>
-          {number}
-        </Button>
-      ))}
-    </WrapperBoard>
-  ),
+  ({ isAddLayout, ...props }: BoardPropsType): ReactElement => {
+    const isConstructor = useSelector(selectIsConstructor);
+
+    return (
+      <WrapperBoard isAddLayout={isAddLayout} isVisible={isConstructor} {...props}>
+        {OPERATORS.map(number => (
+          <Button
+            isAddLayout={isAddLayout}
+            isVisible={isConstructor}
+            typeButton="small"
+            key={number}
+          >
+            {number}
+          </Button>
+        ))}
+      </WrapperBoard>
+    );
+  },
 );

@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { Wrapper } from './style';
 
+import { Toggle } from 'components/toggle';
 import { BOARD_COMPONENTS } from 'const';
 import { Board } from 'enum';
 import { useSetOverWhichBoard } from 'hooks';
@@ -18,6 +19,7 @@ import {
 import {
   selectCurrentBoard,
   selectCurrentBoardDragId,
+  selectIsConstructor,
   selectLastBoardId,
   selectSortSelectedElements,
 } from 'store/selectors';
@@ -34,6 +36,7 @@ export const LayoutDesk = memo((): ReactElement => {
   const currentBoard = useSelector(selectCurrentBoard);
   const selectedBoards = useSelector(selectSortSelectedElements);
   const currentBoardDragId = useSelector(selectCurrentBoardDragId);
+  const isConstructor = useSelector(selectIsConstructor);
 
   const handleDragOver = (e: DragEvent<HTMLDivElement>): void => {
     e.preventDefault();
@@ -103,49 +106,67 @@ export const LayoutDesk = memo((): ReactElement => {
     }) => {
       const BoardComponent = BOARD_COMPONENTS[type];
       const isDraggableNumberDisplay = type !== Board.NumberDisplay;
+      if (isConstructor) {
+        return (
+          <BoardComponent
+            key={id}
+            isDraggable={!isDisable}
+            isOverBoard={isOverBoard}
+            isAddLayout={isAddLayout}
+            data-currency={dataCurrency}
+            isOverDesk={isLastElementLayoutDesk}
+            draggable={isDraggableNumberDisplay}
+            onDragEnd={(e: DragEvent<HTMLDivElement>) => handleDragEnd(e)}
+            onDragOver={(e: DragEvent<HTMLDivElement>) => handleDragOver(e)}
+            onDragLeave={(e: DragEvent<HTMLDivElement>) => handleDragLeave(e)}
+            onDrop={(e: DragEvent<HTMLDivElement>) => handleDropToBoard(e, id)}
+            onDragStart={(e: DragEvent<HTMLDivElement>) => handleDragStart(e, id)}
+            onDoubleClick={() => deleteBoardToLayoutDesk(id)}
+          />
+        );
+      }
       return (
-        <BoardComponent
-          key={id}
-          isDraggable={!isDisable}
-          isOverBoard={isOverBoard}
-          isAddLayout={isAddLayout}
-          data-currency={dataCurrency}
-          isOverDesk={isLastElementLayoutDesk}
-          draggable={isDraggableNumberDisplay}
-          onDragEnd={(e: DragEvent<HTMLDivElement>) => handleDragEnd(e)}
-          onDragOver={(e: DragEvent<HTMLDivElement>) => handleDragOver(e)}
-          onDragLeave={(e: DragEvent<HTMLDivElement>) => handleDragLeave(e)}
-          onDrop={(e: DragEvent<HTMLDivElement>) => handleDropToBoard(e, id)}
-          onDragStart={(e: DragEvent<HTMLDivElement>) => handleDragStart(e, id)}
-          onDoubleClick={() => deleteBoardToLayoutDesk(id)}
-        />
+        <BoardComponent key={id} isAddLayout={isAddLayout} data-currency={dataCurrency} />
       );
     },
   );
 
   if (selectedBoards.length === EMPTY_ARRAY) {
     return (
-      <Wrapper
-        data-currency="emptyDesk"
-        onDrop={handleDropToLayoutDesk}
-        onDragOver={e => handleDragOver(e)}
-        onDragLeave={e => handleDragLeave(e)}
-      >
-        <Leaf />
-        <div>
-          <span>Перетащите сюда</span>любой элемент из левой панели
-        </div>
-      </Wrapper>
+      <div>
+        <Toggle />
+        <Wrapper
+          data-currency="emptyDesk"
+          onDrop={handleDropToLayoutDesk}
+          onDragOver={e => handleDragOver(e)}
+          onDragLeave={e => handleDragLeave(e)}
+        >
+          <Leaf />
+          <div>
+            <span>Перетащите сюда</span>любой элемент из левой панели
+          </div>
+        </Wrapper>
+      </div>
     );
   }
 
   return (
-    <WrapperDesk
-      data-currency="filledDesk"
-      onDrop={handleDropToLayoutDesk}
-      onDragOver={(e: DragEvent<HTMLDivElement>) => handleDragOver(e)}
-    >
-      {boards}
-    </WrapperDesk>
+    <div>
+      <Toggle />
+      {isConstructor ? (
+        <WrapperDesk
+          isVisible
+          data-currency="filledDesk"
+          onDrop={handleDropToLayoutDesk}
+          onDragOver={(e: DragEvent<HTMLDivElement>) => handleDragOver(e)}
+        >
+          {boards}
+        </WrapperDesk>
+      ) : (
+        <WrapperDesk isVisible data-currency="filledDesk">
+          {boards}
+        </WrapperDesk>
+      )}
+    </div>
   );
 });

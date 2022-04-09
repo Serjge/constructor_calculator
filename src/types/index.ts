@@ -1,3 +1,3 @@
 export type { OperatorType } from './operatorsType';
 export type { ComponentsBoardsType } from 'types/componentsBoardsType';
-export type { BoardType } from 'types/boardType';
+export type { BoardType, BoardPropsType } from 'types/boardType';

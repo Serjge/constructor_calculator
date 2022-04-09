@@ -4,13 +4,14 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { BOARD_COMPONENTS } from 'const';
 import { setCurrentBoardDragId } from 'store/action';
-import { selectCalculatorElements } from 'store/selectors';
+import { selectCalculatorElements, selectIsConstructor } from 'store/selectors';
 import { WrapperDesk } from 'style';
 
 export const ElementsDesk = (): ReactElement => {
   const dispatch = useDispatch();
 
   const boards = useSelector(selectCalculatorElements);
+  const isConstructor = useSelector(selectIsConstructor);
 
   const handleDragStart = (
     e: DragEvent<HTMLDivElement>,
@@ -20,7 +21,7 @@ export const ElementsDesk = (): ReactElement => {
   };
 
   return (
-    <WrapperDesk>
+    <WrapperDesk isVisible={isConstructor}>
       {boards.map(({ id, type, isDisable, dataCurrency }) => {
         const BoardComponent = BOARD_COMPONENTS[type];
         return (
@@ -29,7 +30,7 @@ export const ElementsDesk = (): ReactElement => {
             role="presentation"
             isDisable={isDisable}
             draggable={!isDisable}
-            isDraggable={!isDisable}
+            isDraggable={isConstructor && !isDisable}
             data-currency={dataCurrency}
             onDragStart={(e: DragEvent<HTMLDivElement>) => handleDragStart(e, id)}
           />

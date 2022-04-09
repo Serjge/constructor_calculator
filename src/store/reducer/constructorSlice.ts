@@ -93,7 +93,7 @@ export const constructorSlice = createSlice({
       );
 
       if (state.lastBoardId) {
-        const LastBoardIndex = state.calculatorElements.findIndex(
+        const LastBoardIndex = state.selectedElements.findIndex(
           ({ id }) => id === state.lastBoardId,
         );
         state.selectedElements[LastBoardIndex].isLastElementLayoutDesk = false;

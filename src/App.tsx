@@ -18,7 +18,6 @@ export const App = (): ReactElement => (
     >
       <ElementsDesk />
 
-      {/* <Toggle /> */}
       <LayoutDesk />
     </div>
   </div>

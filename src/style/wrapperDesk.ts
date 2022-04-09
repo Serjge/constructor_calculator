@@ -1,7 +1,12 @@
 import styled from 'styled-components';
 
-export const WrapperDesk = styled.div`
+type WrapperDeskPropsType = {
+  isVisible?: boolean;
+};
+
+export const WrapperDesk = styled.div<WrapperDeskPropsType>`
   margin: 30px;
   width: 243px;
   height: 480px;
+  opacity: ${({ isVisible }) => (isVisible ? '1' : '0')};
 `;

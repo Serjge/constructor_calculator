@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { setOverBoard } from 'store/action';
-import { selectSelectedElements } from 'store/selectors';
+import { selectSortSelectedElements } from 'store/selectors';
 import { ComponentsBoardsType } from 'types';
 
 type UseSetOverBoardType = (
@@ -15,7 +15,7 @@ type UseSetOverBoardType = (
 export const UseSetOverBoard = (): UseSetOverBoardType => {
   const dispatch = useDispatch();
 
-  const selectedBoards = useSelector(selectSelectedElements);
+  const selectedBoards = useSelector(selectSortSelectedElements);
 
   return useCallback(
     (

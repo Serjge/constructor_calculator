@@ -1,19 +1,18 @@
-import { HTMLAttributes, memo, ReactElement } from 'react';
+import { memo, ReactElement } from 'react';
 
-import { NumberDisplay } from 'components/index';
+import { useSelector } from 'react-redux';
+
+import { NumberDisplay } from 'components';
+import { selectIsConstructor } from 'store/selectors';
 import { WrapperBoard } from 'style';
+import { BoardPropsType } from 'types';
 
-type NumberDisplayBoardPropsType = HTMLAttributes<HTMLElement> & {
-  isAddLayout?: boolean;
-  isDraggable?: boolean;
-  isOverDesk?: boolean;
-  isOverBoard?: boolean;
-  isDisable?: boolean;
-};
-export const NumberDisplayBoard = memo(
-  ({ ...props }: NumberDisplayBoardPropsType): ReactElement => (
-    <WrapperBoard {...props}>
+export const NumberDisplayBoard = memo(({ ...props }: BoardPropsType): ReactElement => {
+  const isConstructor = useSelector(selectIsConstructor);
+
+  return (
+    <WrapperBoard isVisible={isConstructor} {...props}>
       <NumberDisplay />
     </WrapperBoard>
-  ),
-);
+  );
+});
