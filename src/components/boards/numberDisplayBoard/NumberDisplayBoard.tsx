@@ -1,4 +1,4 @@
-import { HTMLAttributes, ReactElement } from 'react';
+import { HTMLAttributes, memo, ReactElement } from 'react';
 
 import { NumberDisplay } from 'components/index';
 import { WrapperBoard } from 'style';
@@ -8,13 +8,12 @@ type NumberDisplayBoardPropsType = HTMLAttributes<HTMLElement> & {
   isDraggable?: boolean;
   isOverDesk?: boolean;
   isOverBoard?: boolean;
+  isDisable?: boolean;
 };
-export const NumberDisplayBoard = ({
-  isAddLayout,
-  isDraggable,
-  ...props
-}: NumberDisplayBoardPropsType): ReactElement => (
-  <WrapperBoard isAddLayout={isAddLayout} isDraggable={isDraggable} {...props}>
-    <NumberDisplay />
-  </WrapperBoard>
+export const NumberDisplayBoard = memo(
+  ({ ...props }: NumberDisplayBoardPropsType): ReactElement => (
+    <WrapperBoard {...props}>
+      <NumberDisplay />
+    </WrapperBoard>
+  ),
 );

@@ -5,8 +5,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Wrapper } from './style';
 
 import { BOARD_COMPONENTS } from 'const';
+import { Board } from 'enum';
 import { useSetOverWhichBoard } from 'hooks';
-import { Leaf } from 'icon/Leaf';
+import { Leaf } from 'icon';
 import {
   addBoard,
   deleteBoard,
@@ -20,6 +21,7 @@ import {
   selectLastBoardId,
   selectSortSelectedElements,
 } from 'store/selectors';
+import { WrapperDesk } from 'style';
 
 const EMPTY_ARRAY = 0;
 
@@ -33,7 +35,7 @@ export const LayoutDesk = memo((): ReactElement => {
   const selectedBoards = useSelector(selectSortSelectedElements);
   const currentBoardDragId = useSelector(selectCurrentBoardDragId);
 
-  const dragOverHandler = (e: DragEvent<HTMLDivElement>): void => {
+  const handleDragOver = (e: DragEvent<HTMLDivElement>): void => {
     e.preventDefault();
     setOverWhichBoard(e, '#F0F9FF', true);
 
@@ -44,17 +46,11 @@ export const LayoutDesk = memo((): ReactElement => {
     }
   };
 
-  const dragLeaveHandler = (e: DragEvent<HTMLDivElement>): void => {
-    setOverWhichBoard(e, 'none', false);
-  };
-
-  const dragEndHandler = (e: DragEvent<HTMLDivElement>): void => {
-    e.currentTarget.style.background = 'none';
-  };
-
-  const dropHandler = (e: DragEvent<HTMLDivElement>, draggableBoardId: string): void => {
+  const handleDropToBoard = (
+    e: DragEvent<HTMLDivElement>,
+    draggableBoardId: string,
+  ): void => {
     e.preventDefault();
-
     e.currentTarget.style.background = 'none';
 
     if (currentBoard!.isAddLayout) {
@@ -63,11 +59,7 @@ export const LayoutDesk = memo((): ReactElement => {
     dispatch(setCurrentBoardDragId(null));
   };
 
-  const onDoubleClick = (boardId: string): void => {
-    dispatch(deleteBoard(boardId));
-  };
-
-  const dropLayoutDeskHandler = (e: DragEvent<HTMLDivElement>): void => {
+  const handleDropToLayoutDesk = (e: DragEvent<HTMLDivElement>): void => {
     e.preventDefault();
 
     if (currentBoard) {
@@ -78,7 +70,15 @@ export const LayoutDesk = memo((): ReactElement => {
     dispatch(setCurrentBoardDragId(null));
   };
 
-  const dragStartHandler = (
+  const handleDragLeave = (e: DragEvent<HTMLDivElement>): void => {
+    setOverWhichBoard(e, 'none', false);
+  };
+
+  const handleDragEnd = (e: DragEvent<HTMLDivElement>): void => {
+    e.currentTarget.style.background = 'none';
+  };
+
+  const handleDragStart = (
     e: DragEvent<HTMLDivElement>,
     draggableBoardId: string,
   ): void => {
@@ -87,13 +87,49 @@ export const LayoutDesk = memo((): ReactElement => {
     }
   };
 
+  const deleteBoardToLayoutDesk = (boardId: string): void => {
+    dispatch(deleteBoard(boardId));
+  };
+
+  const boards = selectedBoards.map(
+    ({
+      isAddLayout,
+      id,
+      type,
+      isDisable,
+      dataCurrency,
+      isLastElementLayoutDesk,
+      isOverBoard,
+    }) => {
+      const BoardComponent = BOARD_COMPONENTS[type];
+      const isDraggableNumberDisplay = type !== Board.NumberDisplay;
+      return (
+        <BoardComponent
+          key={id}
+          isDraggable={!isDisable}
+          isOverBoard={isOverBoard}
+          isAddLayout={isAddLayout}
+          data-currency={dataCurrency}
+          isOverDesk={isLastElementLayoutDesk}
+          draggable={isDraggableNumberDisplay}
+          onDragEnd={(e: DragEvent<HTMLDivElement>) => handleDragEnd(e)}
+          onDragOver={(e: DragEvent<HTMLDivElement>) => handleDragOver(e)}
+          onDragLeave={(e: DragEvent<HTMLDivElement>) => handleDragLeave(e)}
+          onDrop={(e: DragEvent<HTMLDivElement>) => handleDropToBoard(e, id)}
+          onDragStart={(e: DragEvent<HTMLDivElement>) => handleDragStart(e, id)}
+          onDoubleClick={() => deleteBoardToLayoutDesk(id)}
+        />
+      );
+    },
+  );
+
   if (selectedBoards.length === EMPTY_ARRAY) {
     return (
       <Wrapper
-        onDrop={dropLayoutDeskHandler}
-        onDragOver={e => dragOverHandler(e)}
-        onDragLeave={e => dragLeaveHandler(e)}
         data-currency="emptyDesk"
+        onDrop={handleDropToLayoutDesk}
+        onDragOver={e => handleDragOver(e)}
+        onDragLeave={e => handleDragLeave(e)}
       >
         <Leaf />
         <div>
@@ -104,33 +140,12 @@ export const LayoutDesk = memo((): ReactElement => {
   }
 
   return (
-    <div
-      style={{ margin: '30px', width: '243px', height: '480px' }}
-      onDrop={dropLayoutDeskHandler}
-      onDragOver={(e: DragEvent<HTMLDivElement>) => dragOverHandler(e)}
+    <WrapperDesk
       data-currency="filledDesk"
+      onDrop={handleDropToLayoutDesk}
+      onDragOver={(e: DragEvent<HTMLDivElement>) => handleDragOver(e)}
     >
-      {selectedBoards.map(board => {
-        const BoardComponent = BOARD_COMPONENTS[board.type];
-        const isDraggableNumberDisplay = board.type !== 'numberDisplay';
-        return (
-          <BoardComponent
-            isOverBoard={board.isOverBoard}
-            isOverDesk={board.isLastElementLayoutDesk}
-            isAddLayout={board.isAddLayout}
-            isDraggable={!board.isDisable}
-            key={board.id}
-            data-currency={board.dataCurrency}
-            onDoubleClick={() => onDoubleClick(board.id)}
-            onDragOver={(e: DragEvent<HTMLDivElement>) => dragOverHandler(e)}
-            onDragLeave={(e: DragEvent<HTMLDivElement>) => dragLeaveHandler(e)}
-            onDragStart={(e: DragEvent<HTMLDivElement>) => dragStartHandler(e, board.id)}
-            onDragEnd={(e: DragEvent<HTMLDivElement>) => dragEndHandler(e)}
-            onDrop={(e: DragEvent<HTMLDivElement>) => dropHandler(e, board.id)}
-            draggable={isDraggableNumberDisplay}
-          />
-        );
-      })}
-    </div>
+      {boards}
+    </WrapperDesk>
   );
 });

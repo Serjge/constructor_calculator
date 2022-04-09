@@ -5,6 +5,7 @@ type WrapperBoardPropsType = {
   isDraggable?: boolean;
   isOverDesk?: boolean;
   isOverBoard?: boolean;
+  isDisable?: boolean;
 };
 
 const elementShadow = css`
@@ -36,6 +37,7 @@ export const WrapperBoard = styled.div<WrapperBoardPropsType>`
   border-radius: 4px;
   position: relative;
 
+  opacity: ${({ isDisable }) => (isDisable ? '0.5' : '1')};
   background-color: ${({ theme: { mainBackgroundColor } }) => mainBackgroundColor};
   cursor: ${({ isDraggable }) => (isDraggable ? 'move' : 'not-allowed')};
 

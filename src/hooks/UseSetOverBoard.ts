@@ -14,6 +14,7 @@ type UseSetOverBoardType = (
 
 export const UseSetOverBoard = (): UseSetOverBoardType => {
   const dispatch = useDispatch();
+
   const selectedBoards = useSelector(selectSelectedElements);
 
   return useCallback(

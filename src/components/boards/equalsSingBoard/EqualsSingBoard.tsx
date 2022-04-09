@@ -1,4 +1,4 @@
-import React, { HTMLAttributes, ReactElement } from 'react';
+import React, { HTMLAttributes, memo, ReactElement } from 'react';
 
 import { Button } from 'components';
 import { WrapperBoard } from 'style';
@@ -8,14 +8,13 @@ type EqualsSingBoardPropsType = HTMLAttributes<HTMLElement> & {
   isDraggable?: boolean;
   isOverDesk?: boolean;
   isOverBoard?: boolean;
+  isDisable?: boolean;
 };
 
-export const EqualsSingBoard = ({
-  isAddLayout,
-  isDraggable,
-  ...props
-}: EqualsSingBoardPropsType): ReactElement => (
-  <WrapperBoard isDraggable={isDraggable} isAddLayout={isAddLayout} {...props}>
-    <Button typeButton="long">=</Button>
-  </WrapperBoard>
+export const EqualsSingBoard = memo(
+  ({ ...props }: EqualsSingBoardPropsType): ReactElement => (
+    <WrapperBoard {...props}>
+      <Button typeButton="long">=</Button>
+    </WrapperBoard>
+  ),
 );

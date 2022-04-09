@@ -1,1 +1,1 @@
-export { OperatorBoard } from './NumberBoard';
+export { OperatorBoard } from 'components/boards/operatorBoard/OperatorBoard';

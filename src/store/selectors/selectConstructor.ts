@@ -3,8 +3,9 @@ import { createSelector } from '@reduxjs/toolkit';
 import { selectState } from 'store/store';
 import { sortBoards } from 'utils';
 
-export const selectSelectedElements = createSelector(selectState, state =>
-  state.constructorCalc.selectedElements.slice().sort(sortBoards),
+export const selectSelectedElements = createSelector(
+  selectState,
+  state => state.constructorCalc.selectedElements,
 );
 
 export const selectSortSelectedElements = createSelector(selectState, state =>

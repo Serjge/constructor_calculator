@@ -1,4 +1,4 @@
-import { HTMLAttributes, ReactElement } from 'react';
+import { HTMLAttributes, memo, ReactElement } from 'react';
 
 import { Button } from 'components';
 import { WrapperBoard } from 'style';
@@ -8,17 +8,19 @@ type OperatorBoardPropsType = HTMLAttributes<HTMLElement> & {
   isDraggable?: boolean;
   isOverDesk?: boolean;
   isOverBoard?: boolean;
+  isDisable?: boolean;
 };
 
-export const OperatorBoard = ({ ...props }: OperatorBoardPropsType): ReactElement => {
-  const numbers = ['/', 'X', '-', '+'];
-  return (
+const OPERATORS = ['/', 'X', '-', '+'];
+
+export const OperatorBoard = memo(
+  ({ ...props }: OperatorBoardPropsType): ReactElement => (
     <WrapperBoard {...props}>
-      {numbers.map(number => (
+      {OPERATORS.map(number => (
         <Button typeButton="small" key={number}>
           {number}
         </Button>
       ))}
     </WrapperBoard>
-  );
-};
+  ),
+);

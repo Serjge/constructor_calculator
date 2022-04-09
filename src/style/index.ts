@@ -1,3 +1,4 @@
 export { theme } from './theme';
 export { GlobalStyle } from './globalStyles';
-export { WrapperBoard } from './WrapperBoard';
+export { WrapperDesk } from './wrapperDesk';
+export { WrapperBoard } from './wrapperBoard';

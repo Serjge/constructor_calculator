@@ -1,44 +1,40 @@
-import React, { ReactElement } from 'react';
+import { ReactElement, DragEvent } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
 import { BOARD_COMPONENTS } from 'const';
-import { Desks } from 'enum';
 import { setCurrentBoardDragId } from 'store/action';
 import { selectCalculatorElements } from 'store/selectors';
-import { BoardType } from 'types';
+import { WrapperDesk } from 'style';
 
 export const ElementsDesk = (): ReactElement => {
   const dispatch = useDispatch();
 
   const boards = useSelector(selectCalculatorElements);
 
-  const dragStartHandler = (
-    e: React.DragEvent<HTMLDivElement>,
-    board: number,
-    item: BoardType,
+  const handleDragStart = (
+    e: DragEvent<HTMLDivElement>,
+    draggableBoardId: string,
   ): void => {
-    dispatch(setCurrentBoardDragId(item.id));
+    dispatch(setCurrentBoardDragId(draggableBoardId));
   };
 
   return (
-    <div style={{ margin: '30px', width: '243px', height: '480px' }}>
-      {boards.map(board => {
-        const BoardComponent = BOARD_COMPONENTS[board.type];
+    <WrapperDesk>
+      {boards.map(({ id, type, isDisable, dataCurrency }) => {
+        const BoardComponent = BOARD_COMPONENTS[type];
         return (
           <BoardComponent
-            isDraggable={!board.isDisable}
-            data-currency={board.dataCurrency}
+            key={id}
             role="presentation"
-            key={board.id}
-            style={{ opacity: board.isDisable ? '0.5' : '1' }}
-            onDragStart={(e: React.DragEvent<HTMLDivElement>) =>
-              dragStartHandler(e, Desks.Elements, board)
-            }
-            draggable={!board.isDisable}
+            isDisable={isDisable}
+            draggable={!isDisable}
+            isDraggable={!isDisable}
+            data-currency={dataCurrency}
+            onDragStart={(e: DragEvent<HTMLDivElement>) => handleDragStart(e, id)}
           />
         );
       })}
-    </div>
+    </WrapperDesk>
   );
 };
