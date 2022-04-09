@@ -1,8 +1,18 @@
-import { RootState } from 'store/types';
-import { OperatorType } from 'types';
+import { createSelector } from '@reduxjs/toolkit';
 
-export const selectVisibleValue = (state: RootState): string =>
-  state.calculator.visibleValue;
-export const selectSaveValue = (state: RootState): string => state.calculator.saveValue;
-export const selectOperator = (state: RootState): OperatorType | null =>
-  state.calculator.operator;
+import { selectState } from 'store/store';
+
+export const selectVisibleValue = createSelector(
+  selectState,
+  state => state.calculator.visibleValue,
+);
+
+export const selectSaveValue = createSelector(
+  selectState,
+  state => state.calculator.saveValue,
+);
+
+export const selectOperator = createSelector(
+  selectState,
+  state => state.calculator.operator,
+);

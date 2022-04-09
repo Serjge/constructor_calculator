@@ -9,7 +9,7 @@ export type CalculatorState = {
 };
 
 const initialState: CalculatorState = {
-  visibleValue: '',
+  visibleValue: '3213',
   saveValue: '',
   operator: null,
 };

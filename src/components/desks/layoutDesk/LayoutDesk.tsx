@@ -106,6 +106,7 @@ export const LayoutDesk = memo((): ReactElement => {
     }) => {
       const BoardComponent = BOARD_COMPONENTS[type];
       const isDraggableNumberDisplay = type !== Board.NumberDisplay;
+
       if (isConstructor) {
         return (
           <BoardComponent
@@ -125,6 +126,7 @@ export const LayoutDesk = memo((): ReactElement => {
           />
         );
       }
+
       return (
         <BoardComponent key={id} isAddLayout={isAddLayout} data-currency={dataCurrency} />
       );
