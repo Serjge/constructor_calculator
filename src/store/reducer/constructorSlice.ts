@@ -101,6 +101,7 @@ export const constructorSlice = createSlice({
 
       state.calculatorElements[boardIndex].isDisable = true;
       state.calculatorElements[boardIndex].isAddLayout = true;
+      state.lastBoardId = null;
     },
 
     deleteBoard: (state, action: PayloadAction<string>) => {

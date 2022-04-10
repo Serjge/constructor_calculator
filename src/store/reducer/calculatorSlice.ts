@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+import { setIsConstructor } from 'store/action';
 import { OperatorType } from 'types';
 
 export type CalculatorState = {
@@ -7,6 +8,8 @@ export type CalculatorState = {
   saveValue: string;
   operator: OperatorType | null;
 };
+
+const ERRORS = ['Не определено', 'Оператор не указан', 'NaN'];
 
 const initialState: CalculatorState = {
   visibleValue: '',
@@ -19,7 +22,7 @@ export const calculatorSlice = createSlice({
   initialState,
   reducers: {
     setValue: (state, action: PayloadAction<string>) => {
-      if (state.visibleValue !== 'Оператор не указан') {
+      if (ERRORS.includes(state.visibleValue)) {
         state.visibleValue = '';
       }
       state.visibleValue += action.payload;
@@ -49,6 +52,10 @@ export const calculatorSlice = createSlice({
           break;
 
         case '/':
+          if (state.visibleValue === '0' || state.visibleValue === '') {
+            state.visibleValue = 'Не определено';
+            break;
+          }
           state.visibleValue = String(
             Number(state.saveValue) / Number(state.visibleValue),
           );
@@ -70,6 +77,11 @@ export const calculatorSlice = createSlice({
     resetValue: state => {
       state.visibleValue = '';
     },
+  },
+  extraReducers: builder => {
+    builder.addCase(setIsConstructor, state => {
+      state.visibleValue = '';
+    });
   },
 });
 

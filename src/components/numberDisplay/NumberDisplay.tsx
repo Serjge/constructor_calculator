@@ -19,6 +19,9 @@ export const NumberDisplay = memo(
         `${(WIDTH_NUMBER_DISPLAY / value.length) * COEFFICIENT}px`,
       );
     }
+    if (ref.current && value.length < MIN_LENGTH_NUMBER) {
+      ref.current!.style.fontSize = '32px';
+    }
 
     return (
       <Wrapper ref={ref} value={value} {...props}>
