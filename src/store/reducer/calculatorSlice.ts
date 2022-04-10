@@ -19,6 +19,9 @@ const initialState: CalculatorState = {
   isCompute: false,
 };
 
+const MAX_LENGTH_NUMBER = 16;
+const MAX_LENGTH_DECIMAL_NUMBER = 14;
+
 export const calculatorSlice = createSlice({
   name: 'calculator',
   initialState,
@@ -30,7 +33,12 @@ export const calculatorSlice = createSlice({
       if (!state.isCompute) {
         state.isCompute = true;
       }
-
+      if (state.visibleValue.length === MAX_LENGTH_NUMBER) {
+        return;
+      }
+      if (action.payload === '.' && state.visibleValue === '') {
+        state.visibleValue = '0';
+      }
       state.visibleValue += action.payload;
     },
     setOperator: (state, action: PayloadAction<OperatorType | null>) => {
@@ -67,6 +75,13 @@ export const calculatorSlice = createSlice({
           state.visibleValue = String(
             Number(state.saveValue) / Number(state.visibleValue),
           );
+
+          if (state.visibleValue.length >= MAX_LENGTH_NUMBER) {
+            state.visibleValue = String(
+              Number(state.visibleValue).toFixed(MAX_LENGTH_DECIMAL_NUMBER),
+            );
+          }
+
           state.isCompute = false;
           break;
 

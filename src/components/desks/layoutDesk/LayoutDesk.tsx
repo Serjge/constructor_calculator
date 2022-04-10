@@ -1,10 +1,10 @@
-import { DragEvent, memo, ReactElement } from 'react';
+import { DragEvent, ReactElement } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Wrapper } from './style';
 
-import { Toggle } from 'components/toggle';
+import { Toggle } from 'components';
 import { BOARD_COMPONENTS } from 'const';
 import { Board } from 'enum';
 import { useSetOverWhichBoard } from 'hooks';
@@ -27,16 +27,16 @@ import { WrapperDesk } from 'style';
 
 const EMPTY_ARRAY = 0;
 
-export const LayoutDesk = memo((): ReactElement => {
+export const LayoutDesk = (): ReactElement => {
   const dispatch = useDispatch();
 
   const setOverWhichBoard = useSetOverWhichBoard();
 
   const lastBoardId = useSelector(selectLastBoardId);
   const currentBoard = useSelector(selectCurrentBoard);
+  const isConstructor = useSelector(selectIsConstructor);
   const selectedBoards = useSelector(selectSortSelectedElements);
   const currentBoardDragId = useSelector(selectCurrentBoardDragId);
-  const isConstructor = useSelector(selectIsConstructor);
 
   const handleDragOver = (e: DragEvent<HTMLDivElement>): void => {
     e.preventDefault();
@@ -173,4 +173,4 @@ export const LayoutDesk = memo((): ReactElement => {
       )}
     </div>
   );
-});
+};
