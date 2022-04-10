@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Board } from 'enum';
 import { BoardType, ComponentsBoardsType } from 'types';
 
-export type ConstructorState = {
+export type ConstructorStateType = {
   calculatorElements: BoardType[];
   selectedElements: BoardType[];
   isConstructor: boolean;
@@ -11,7 +11,7 @@ export type ConstructorState = {
   lastBoardId: string | null;
 };
 
-const initialState: ConstructorState = {
+const initialState: ConstructorStateType = {
   calculatorElements: [
     {
       id: '1',
@@ -88,10 +88,6 @@ export const constructorSlice = createSlice({
         });
       }
 
-      const boardIndex = state.calculatorElements.findIndex(
-        ({ id }) => id === action.payload.id,
-      );
-
       if (state.lastBoardId) {
         const LastBoardIndex = state.selectedElements.findIndex(
           ({ id }) => id === state.lastBoardId,
@@ -99,6 +95,10 @@ export const constructorSlice = createSlice({
 
         state.selectedElements[LastBoardIndex].isLastElementLayoutDesk = false;
       }
+
+      const boardIndex = state.calculatorElements.findIndex(
+        ({ id }) => id === action.payload.id,
+      );
 
       state.calculatorElements[boardIndex].isDisable = true;
       state.calculatorElements[boardIndex].isAddLayout = true;
