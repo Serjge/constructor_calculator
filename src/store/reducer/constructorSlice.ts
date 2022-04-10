@@ -96,6 +96,7 @@ export const constructorSlice = createSlice({
         const LastBoardIndex = state.selectedElements.findIndex(
           ({ id }) => id === state.lastBoardId,
         );
+
         state.selectedElements[LastBoardIndex].isLastElementLayoutDesk = false;
       }
 
@@ -106,6 +107,7 @@ export const constructorSlice = createSlice({
 
     deleteBoard: (state, action: PayloadAction<string>) => {
       const index = state.calculatorElements.findIndex(({ id }) => id === action.payload);
+
       state.calculatorElements[index].isDisable = false;
       state.calculatorElements[index].isAddLayout = false;
 
@@ -121,6 +123,7 @@ export const constructorSlice = createSlice({
       const { typeBoard, isOverBoard } = action.payload;
 
       const index = state.selectedElements.findIndex(({ type }) => type === typeBoard);
+
       state.selectedElements[index].isOverBoard = isOverBoard;
     },
 
@@ -141,7 +144,9 @@ export const constructorSlice = createSlice({
           state.selectedElements[state.selectedElements.length - LAST_ELEMENT_ARRAY].id;
 
         state.lastBoardId = lastBoardId;
+
         const index = state.selectedElements.findIndex(({ id }) => id === lastBoardId);
+
         state.selectedElements[index].isLastElementLayoutDesk = isLastElementLayoutDesk;
       }
     },

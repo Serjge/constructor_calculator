@@ -30,15 +30,19 @@ export const calculatorSlice = createSlice({
       if (ERRORS.includes(state.visibleValue) || !state.isCompute) {
         state.visibleValue = '';
       }
+
       if (!state.isCompute) {
         state.isCompute = true;
       }
+
       if (state.visibleValue.length === MAX_LENGTH_NUMBER) {
         return;
       }
+
       if (action.payload === '.' && state.visibleValue === '') {
         state.visibleValue = '0';
       }
+
       state.visibleValue += action.payload;
     },
     setOperator: (state, action: PayloadAction<OperatorType | null>) => {
@@ -89,6 +93,7 @@ export const calculatorSlice = createSlice({
           state.visibleValue = String(
             Number(state.saveValue) * Number(state.visibleValue),
           );
+
           state.isCompute = false;
           break;
 
@@ -96,6 +101,7 @@ export const calculatorSlice = createSlice({
           if (state.visibleValue !== 'Оператор не указан') {
             state.saveValue = state.visibleValue;
           }
+
           state.visibleValue = 'Оператор не указан';
       }
     },
