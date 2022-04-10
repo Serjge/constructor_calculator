@@ -7,6 +7,7 @@ export type CalculatorState = {
   visibleValue: string;
   saveValue: string;
   operator: OperatorType | null;
+  isCompute: boolean;
 };
 
 const ERRORS = ['Не определено', 'Оператор не указан', 'NaN'];
@@ -15,6 +16,7 @@ const initialState: CalculatorState = {
   visibleValue: '',
   saveValue: '',
   operator: null,
+  isCompute: false,
 };
 
 export const calculatorSlice = createSlice({
@@ -22,9 +24,13 @@ export const calculatorSlice = createSlice({
   initialState,
   reducers: {
     setValue: (state, action: PayloadAction<string>) => {
-      if (ERRORS.includes(state.visibleValue)) {
+      if (ERRORS.includes(state.visibleValue) || !state.isCompute) {
         state.visibleValue = '';
       }
+      if (!state.isCompute) {
+        state.isCompute = true;
+      }
+
       state.visibleValue += action.payload;
     },
     setOperator: (state, action: PayloadAction<OperatorType | null>) => {
@@ -43,12 +49,14 @@ export const calculatorSlice = createSlice({
           state.visibleValue = String(
             Number(state.saveValue) + Number(state.visibleValue),
           );
+          state.isCompute = false;
           break;
 
         case '-':
           state.visibleValue = String(
             Number(state.saveValue) - Number(state.visibleValue),
           );
+          state.isCompute = false;
           break;
 
         case '/':
@@ -59,12 +67,14 @@ export const calculatorSlice = createSlice({
           state.visibleValue = String(
             Number(state.saveValue) / Number(state.visibleValue),
           );
+          state.isCompute = false;
           break;
 
         case 'X':
           state.visibleValue = String(
             Number(state.saveValue) * Number(state.visibleValue),
           );
+          state.isCompute = false;
           break;
 
         default:
