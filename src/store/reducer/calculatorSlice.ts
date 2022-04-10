@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { setIsConstructor } from 'store/action';
 import { OperatorType } from 'types';
 
-export type CalculatorState = {
+export type CalculatorStateType = {
   visibleValue: string;
   saveValue: string;
   operator: OperatorType | null;
@@ -12,7 +12,7 @@ export type CalculatorState = {
 
 const ERRORS = ['Не определено', 'Оператор не указан', 'NaN'];
 
-const initialState: CalculatorState = {
+const initialState: CalculatorStateType = {
   visibleValue: '',
   saveValue: '',
   operator: null,
@@ -46,14 +46,14 @@ export const calculatorSlice = createSlice({
       state.visibleValue += action.payload;
     },
     setOperator: (state, action: PayloadAction<OperatorType | null>) => {
+      if (state.visibleValue === '') {
+        state.visibleValue = '0';
+      }
       state.operator = action.payload;
 
       if (state.visibleValue !== 'Оператор не указан') {
         state.saveValue = state.visibleValue;
       }
-    },
-    saveValue: state => {
-      state.saveValue = state.visibleValue;
     },
     getResult: state => {
       switch (state.operator) {

@@ -1,7 +1,6 @@
 import { calculatorSlice, constructorSlice } from 'store/reducer';
 
-export const { setValue, saveValue, getResult, setOperator, resetValue } =
-  calculatorSlice.actions;
+export const { setValue, getResult, setOperator, resetValue } = calculatorSlice.actions;
 export const {
   setIsConstructor,
   setCurrentBoardDragId,
