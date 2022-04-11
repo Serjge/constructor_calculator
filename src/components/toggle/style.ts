@@ -22,19 +22,17 @@ export const LeverToggle = styled.div<LeverTogglePropsType>`
   font-size: 14px;
   line-height: 15px;
   cursor: pointer;
+  border-radius: 6px;
 `;
 
 export const WrapperToggle = styled.div`
-  ${({ theme: { secondBackgroundColor, mainBackgroundColor } }) => `
-  border: 1px solid ${mainBackgroundColor};
+  ${({ theme: { secondBackgroundColor, mainBorderColor } }) => `
+  border: 2px solid ${mainBorderColor};
   background-color: ${secondBackgroundColor};
   `};
-
   margin: 30px;
-
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 38px;
   border-radius: 6px;
 `;

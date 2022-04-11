@@ -17,7 +17,7 @@ export const Wrapper = styled.div<WrapperPropsType>`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  background: ${({ theme: { mainBackgroundColor } }) => mainBackgroundColor};
+  background: ${({ theme: { mainBorderColor } }) => mainBorderColor};
   border-radius: 6px;
   overflow: hidden;
 `;
