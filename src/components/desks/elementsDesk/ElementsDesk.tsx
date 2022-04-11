@@ -25,7 +25,7 @@ export const ElementsDesk = (): ReactElement => {
   }
 
   return (
-    <WrapperDesk isVisible={isConstructor}>
+    <WrapperDesk>
       {boards.map(({ id, type, isDisable, dataCurrency }) => {
         const BoardComponent = BOARD_COMPONENTS[type];
         return (
@@ -34,7 +34,7 @@ export const ElementsDesk = (): ReactElement => {
             role="presentation"
             isDisable={isDisable}
             draggable={!isDisable}
-            isDraggable={isConstructor && !isDisable}
+            isDraggable={!isDisable}
             data-currency={dataCurrency}
             onDragStart={(e: DragEvent<HTMLDivElement>) => handleDragStart(e, id)}
           />

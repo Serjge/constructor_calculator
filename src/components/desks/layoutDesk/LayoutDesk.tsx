@@ -157,12 +157,9 @@ export const LayoutDesk = (): ReactElement => {
     <div>
       <Toggle />
       {!isConstructor ? (
-        <WrapperDesk isVisible data-currency="filledDesk">
-          {boards}
-        </WrapperDesk>
+        <WrapperDesk data-currency="filledDesk">{boards}</WrapperDesk>
       ) : (
         <WrapperDesk
-          isVisible
           data-currency="filledDesk"
           onDrop={e => handleDropToLayoutDesk(e)}
           onDragLeave={e => handleDragLeave(e)}
