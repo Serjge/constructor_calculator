@@ -92,26 +92,12 @@ export const LayoutDesk = (): ReactElement => {
   };
 
   const boards = selectedBoards.map(
-    ({
-      isAddLayout,
-      id,
-      type,
-      isDisable,
-      dataCurrency,
-      isLastElementLayoutDesk,
-      isOverBoard,
-    }) => {
+    ({ isAddLayout, id, type, isDisable, isLastElementLayoutDesk, isOverBoard }) => {
       const BoardComponent = BOARD_COMPONENTS[type];
       const isDraggableNumberDisplay = type !== Board.NumberDisplay;
 
       if (!isConstructor) {
-        return (
-          <BoardComponent
-            key={id}
-            isAddLayout={isAddLayout}
-            data-currency={dataCurrency}
-          />
-        );
+        return <BoardComponent key={id} isAddLayout={isAddLayout} data-currency={type} />;
       }
 
       return (
@@ -120,7 +106,7 @@ export const LayoutDesk = (): ReactElement => {
           isDraggable={!isDisable}
           isOverBoard={isOverBoard}
           isAddLayout={isAddLayout}
-          data-currency={dataCurrency}
+          data-currency={type}
           isOverDesk={isLastElementLayoutDesk}
           draggable={isDraggableNumberDisplay}
           onDragEnd={(e: DragEvent<HTMLDivElement>) => handleDragEnd(e)}

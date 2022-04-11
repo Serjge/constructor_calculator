@@ -6,7 +6,6 @@ export type BoardType = {
   id: string;
   type: ComponentsBoardsType;
   isDisable: boolean;
-  dataCurrency: ComponentsBoardsType;
   isAddLayout: boolean;
   order: number;
   isOverBoard: boolean;
