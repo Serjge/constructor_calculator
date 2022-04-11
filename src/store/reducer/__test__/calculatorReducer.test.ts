@@ -1,3 +1,4 @@
+import { Error } from 'enum';
 import {
   getResult,
   resetValue,
@@ -14,8 +15,6 @@ const value = '2';
 const longValue = '0.12345678910111';
 const dotValue = '.';
 const dotZero = '0.';
-const errorUndefined = 'Не определено';
-const errorOperatorNotSpecified = 'Оператор не указан';
 const zeroValue = '0';
 const divisionOperator: OperatorType = '/';
 const multiplicationOperator: OperatorType = 'X';
@@ -70,7 +69,7 @@ describe('calculator reducer action setValue', () => {
   });
 
   test('clearing errors undefined', () => {
-    initialState.visibleValue = errorUndefined;
+    initialState.visibleValue = Error.Undefined;
 
     const action = setValue(value);
 
@@ -81,7 +80,7 @@ describe('calculator reducer action setValue', () => {
   });
 
   test('clearing errors operator not specified', () => {
-    initialState.visibleValue = errorOperatorNotSpecified;
+    initialState.visibleValue = Error.OperatorNotSpecified;
 
     const action = setValue(value);
 
@@ -213,7 +212,7 @@ describe('calculator reducer action getResult', () => {
     const endState = calculatorReducer(initialState, actionResult);
 
     expect(endState).not.toBe(initialState);
-    expect(endState.visibleValue).toBe(errorUndefined);
+    expect(endState.visibleValue).toBe(Error.Undefined);
   });
 
   test('get Result division rounded value', () => {

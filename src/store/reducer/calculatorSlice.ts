@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+import { Error } from 'enum';
 import { setIsConstructor } from 'store/action';
 import { OperatorType } from 'types';
 
@@ -10,7 +11,7 @@ export type CalculatorStateType = {
   isCompute: boolean;
 };
 
-const ERRORS = ['Не определено', 'Оператор не указан', 'NaN'];
+const ERRORS: string[] = [Error.Undefined, Error.OperatorNotSpecified];
 
 const initialState: CalculatorStateType = {
   visibleValue: '',
@@ -51,7 +52,7 @@ export const calculatorSlice = createSlice({
       }
       state.operator = action.payload;
 
-      if (state.visibleValue !== 'Оператор не указан') {
+      if (state.visibleValue !== Error.Undefined) {
         state.saveValue = state.visibleValue;
       }
     },
@@ -73,7 +74,7 @@ export const calculatorSlice = createSlice({
 
         case '/':
           if (state.visibleValue === '0' || state.visibleValue === '') {
-            state.visibleValue = 'Не определено';
+            state.visibleValue = Error.Undefined;
             break;
           }
           state.visibleValue = String(
@@ -98,11 +99,11 @@ export const calculatorSlice = createSlice({
           break;
 
         default:
-          if (state.visibleValue !== 'Оператор не указан') {
+          if (state.visibleValue !== Error.OperatorNotSpecified) {
             state.saveValue = state.visibleValue;
           }
 
-          state.visibleValue = 'Оператор не указан';
+          state.visibleValue = Error.OperatorNotSpecified;
       }
     },
     resetValue: state => {

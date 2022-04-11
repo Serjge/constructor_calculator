@@ -1,2 +1,3 @@
 export { Desks } from './desks';
-export { Board } from './Board';
+export { Board } from 'enum/board';
+export { Error } from './error';
