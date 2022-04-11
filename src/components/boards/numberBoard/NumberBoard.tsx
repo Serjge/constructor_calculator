@@ -30,7 +30,6 @@ export const NumberBoard = memo(
       }
       return (
         <Button
-          isVisible={isConstructor}
           isAddLayout={isAddLayout}
           typeButton={number === '0' ? 'medium' : 'default'}
           key={number}
@@ -42,7 +41,7 @@ export const NumberBoard = memo(
     });
 
     return (
-      <WrapperBoard isAddLayout={isAddLayout} isVisible={isConstructor} {...props}>
+      <WrapperBoard isAddLayout={isAddLayout} {...props}>
         {numbers}
       </WrapperBoard>
     );

@@ -35,7 +35,6 @@ export const OperatorBoard = memo(
           key={operator}
           typeButton="small"
           isAddLayout={isAddLayout}
-          isVisible={isConstructor}
           onClick={() => handleClick(operator)}
         >
           {operator}
@@ -44,7 +43,7 @@ export const OperatorBoard = memo(
     });
 
     return (
-      <WrapperBoard isAddLayout={isAddLayout} isVisible={isConstructor} {...props}>
+      <WrapperBoard isAddLayout={isAddLayout} {...props}>
         {operators}
       </WrapperBoard>
     );

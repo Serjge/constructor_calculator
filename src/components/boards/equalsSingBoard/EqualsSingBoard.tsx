@@ -24,12 +24,7 @@ export const EqualsSingBoard = memo(
         {isConstructor ? (
           <Button typeButton="long">=</Button>
         ) : (
-          <Button
-            onClick={handleClick}
-            isAddLayout={isAddLayout}
-            isVisible={isConstructor}
-            typeButton="long"
-          >
+          <Button onClick={handleClick} isAddLayout={isAddLayout} typeButton="long">
             =
           </Button>
         )}

@@ -3,7 +3,6 @@ import styled, { css } from 'styled-components';
 type ButtonPropsType = {
   typeButton?: 'long' | 'default' | 'medium' | 'small';
   cursor?: string;
-  isVisible?: boolean;
   isAddLayout?: boolean;
 };
 
@@ -34,15 +33,15 @@ export const Button = styled.div<ButtonPropsType>`
   align-items: center;
   justify-content: center;
   border-radius: 6px;
+  margin: 4px;
 
   ${({
     isAddLayout,
-    isVisible,
     typeButton,
     cursor,
     theme: { mainColor, mainBorderColor, mainBackgroundColor },
   }) => {
-    if (!isVisible && isAddLayout) {
+    if (isAddLayout) {
       return css`
         cursor: pointer;
 
@@ -58,5 +57,4 @@ export const Button = styled.div<ButtonPropsType>`
     }
     return cursor;
   }};
-  margin: 4px;
 `;
