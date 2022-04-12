@@ -15,11 +15,8 @@ const COEFFICIENT = 1.35;
 const MIN_LENGTH_NUMBER = 10;
 
 export const NumberDisplay = ({ ...props }: NumberDisplayPropsType): ReactElement => {
-  let value = useSelector(selectVisibleValue);
+  const value = useSelector(selectVisibleValue);
 
-  if (value === '') {
-    value = '0';
-  }
   const ref = useRef<HTMLDivElement>(null);
 
   if (ref.current && value.length > MIN_LENGTH_NUMBER) {
@@ -33,7 +30,7 @@ export const NumberDisplay = ({ ...props }: NumberDisplayPropsType): ReactElemen
 
   return (
     <Wrapper ref={ref} value={value} {...props}>
-      <span>{value}</span>
+      <span>{value === '' ? '0' : value}</span>
     </Wrapper>
   );
 };
