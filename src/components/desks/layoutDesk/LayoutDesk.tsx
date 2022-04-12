@@ -43,24 +43,23 @@ export const LayoutDesk = (): ReactElement => {
     setOverWhichBoard(e, '#F0F9FF', true);
 
     if (!currentBoard!.isAddLayout && !lastBoardId) {
-      if (selectedBoards.length !== EMPTY_ARRAY) {
+      if (selectedBoards.length === EMPTY_ARRAY) {
         dispatch(setLastElementLayoutDesk({ isLastElementLayoutDesk: true }));
       }
     }
   };
 
-  const handleDropToBoard = (
-    e: DragEvent<HTMLDivElement>,
-    draggableBoardId: string,
-  ): void => {
-    e.preventDefault();
-    e.currentTarget.style.background = 'none';
+  const handleDropToBoard =
+    (draggableBoardId: string) =>
+    (e: DragEvent<HTMLDivElement>): void => {
+      e.preventDefault();
+      e.currentTarget.style.background = 'none';
 
-    if (currentBoard!.isAddLayout) {
-      dispatch(setOrder({ draggableBoardId }));
-    }
-    dispatch(setCurrentBoardDragId(null));
-  };
+      if (currentBoard!.isAddLayout) {
+        dispatch(setOrder({ draggableBoardId }));
+      }
+      dispatch(setCurrentBoardDragId(null));
+    };
 
   const handleDropToLayoutDesk = (e: DragEvent<HTMLDivElement>): void => {
     e.preventDefault();
@@ -81,13 +80,13 @@ export const LayoutDesk = (): ReactElement => {
     e.currentTarget.style.background = 'none';
   };
 
-  const handleDragStart = (draggableBoardId: string): void => {
+  const handleDragStart = (draggableBoardId: string) => () => {
     if (currentBoardDragId !== draggableBoardId) {
       dispatch(setCurrentBoardDragId(draggableBoardId));
     }
   };
 
-  const deleteBoardToLayoutDesk = (boardId: string): void => {
+  const deleteBoardToLayoutDesk = (boardId: string) => () => {
     dispatch(deleteBoard(boardId));
   };
 
@@ -103,18 +102,18 @@ export const LayoutDesk = (): ReactElement => {
       return (
         <BoardComponent
           key={id}
+          data-currency={type}
           isDraggable={!isDisable}
           isOverBoard={isOverBoard}
           isAddLayout={isAddLayout}
-          data-currency={type}
-          isOverDesk={isLastElementLayoutDesk}
+          onDragEnd={handleDragEnd}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDropToBoard(id)}
+          onDragStart={handleDragStart(id)}
           draggable={isDraggableNumberDisplay}
-          onDragEnd={(e: DragEvent<HTMLDivElement>) => handleDragEnd(e)}
-          onDragOver={(e: DragEvent<HTMLDivElement>) => handleDragOver(e)}
-          onDragLeave={(e: DragEvent<HTMLDivElement>) => handleDragLeave(e)}
-          onDrop={(e: DragEvent<HTMLDivElement>) => handleDropToBoard(e, id)}
-          onDragStart={() => handleDragStart(id)}
-          onDoubleClick={() => deleteBoardToLayoutDesk(id)}
+          isOverDesk={isLastElementLayoutDesk}
+          onDoubleClick={deleteBoardToLayoutDesk(id)}
         />
       );
     },
@@ -126,9 +125,9 @@ export const LayoutDesk = (): ReactElement => {
         <Toggle />
         <Wrapper
           data-currency="emptyDesk"
-          onDrop={e => handleDropToLayoutDesk(e)}
-          onDragOver={e => handleDragOver(e)}
-          onDragLeave={e => handleDragLeave(e)}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDropToLayoutDesk}
         >
           <Leaf />
           <div>
@@ -147,9 +146,9 @@ export const LayoutDesk = (): ReactElement => {
       ) : (
         <WrapperDesk
           data-currency="filledDesk"
-          onDrop={e => handleDropToLayoutDesk(e)}
-          onDragLeave={e => handleDragLeave(e)}
-          onDragOver={(e: DragEvent<HTMLDivElement>) => handleDragOver(e)}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDropToLayoutDesk}
         >
           {boards}
         </WrapperDesk>
