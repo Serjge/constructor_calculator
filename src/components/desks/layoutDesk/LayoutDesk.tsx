@@ -43,7 +43,7 @@ export const LayoutDesk = (): ReactElement => {
     setOverWhichBoard(e, '#F0F9FF', true);
 
     if (!currentBoard!.isAddLayout && !lastBoardId) {
-      if (selectedBoards.length === EMPTY_ARRAY) {
+      if (selectedBoards.length !== EMPTY_ARRAY) {
         dispatch(setLastElementLayoutDesk({ isLastElementLayoutDesk: true }));
       }
     }

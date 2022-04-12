@@ -135,7 +135,7 @@ export const constructorSlice = createSlice({
         ({ id }) => id === state.currentBoardDragId,
       );
 
-      if (isCurrentBoardOnLayoutDesk !== undefined) {
+      if (isCurrentBoardOnLayoutDesk === undefined) {
         const lastBoardId =
           state.selectedElements[state.selectedElements.length - LAST_ELEMENT_ARRAY].id;
 
