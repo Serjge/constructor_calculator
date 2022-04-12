@@ -117,7 +117,6 @@ export const constructorSlice = createSlice({
       action: PayloadAction<{ isOverBoard: boolean; typeBoard: ComponentsBoardsType }>,
     ) => {
       const { typeBoard, isOverBoard } = action.payload;
-
       const index = state.selectedElements.findIndex(({ type }) => type === typeBoard);
 
       state.selectedElements[index].isOverBoard = isOverBoard;
@@ -130,17 +129,14 @@ export const constructorSlice = createSlice({
       }>,
     ) => {
       const { isLastElementLayoutDesk } = action.payload;
-
       const isCurrentBoardOnLayoutDesk = state.selectedElements.find(
         ({ id }) => id === state.currentBoardDragId,
       );
 
-      if (isCurrentBoardOnLayoutDesk === undefined) {
+      if (!isCurrentBoardOnLayoutDesk) {
         const lastBoardId =
           state.selectedElements[state.selectedElements.length - LAST_ELEMENT_ARRAY].id;
-
         state.lastBoardId = lastBoardId;
-
         const index = state.selectedElements.findIndex(({ id }) => id === lastBoardId);
 
         state.selectedElements[index].isLastElementLayoutDesk = isLastElementLayoutDesk;
@@ -150,16 +146,13 @@ export const constructorSlice = createSlice({
     setOrder: (state, action: PayloadAction<{ draggableBoardId: string }>) => {
       const { draggableBoardId } = action.payload;
       const currentBoardId = state.currentBoardDragId;
-
       const draggableBoardIndex = state.selectedElements.findIndex(
         ({ id }) => id === draggableBoardId,
       );
       const currentBoardIndex = state.selectedElements.findIndex(
         ({ id }) => id === currentBoardId,
       );
-
       const draggableBoardOrder = state.selectedElements[draggableBoardIndex].order;
-
       const currentBoardOrder = state.selectedElements[currentBoardIndex].order;
 
       if (draggableBoardId !== '1') {
