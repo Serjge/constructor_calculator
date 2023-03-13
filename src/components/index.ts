@@ -8,3 +8,4 @@ export {
 export { NumberDisplay } from './numberDisplay';
 export { Toggle } from './toggle';
 export { ElementsDesk, LayoutDesk } from './desks';
+export { Draggable, Droppable } from './d&d';

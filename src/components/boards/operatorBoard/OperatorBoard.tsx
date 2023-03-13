@@ -5,16 +5,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'components';
 import { resetValue, setOperator } from 'store/action';
 import { selectIsConstructor } from 'store/selectors';
+import { selectBoardOperators } from 'store/selectors/selectBoard';
 import { WrapperBoard } from 'style';
 import { BoardPropsType, OperatorType } from 'types';
 
 const OPERATORS: OperatorType[] = ['/', 'X', '-', '+'];
 
 export const OperatorBoard = memo(
-  ({ isAddLayout, ...props }: BoardPropsType): ReactElement => {
+  ({ isDisable, desk = 'layout', ...props }: BoardPropsType): ReactElement => {
     const dispatch = useDispatch();
 
     const isConstructor = useSelector(selectIsConstructor);
+    const board = useSelector(selectBoardOperators);
 
     const handleClick = (operator: OperatorType): void => {
       dispatch(setOperator(operator));
@@ -34,7 +36,7 @@ export const OperatorBoard = memo(
         <Button
           key={operator}
           typeButton="small"
-          isAddLayout={isAddLayout}
+          isAddLayout={board.isAddLayout}
           onClick={() => handleClick(operator)}
         >
           {operator}
@@ -43,7 +45,14 @@ export const OperatorBoard = memo(
     });
 
     return (
-      <WrapperBoard isAddLayout={isAddLayout} {...props}>
+      <WrapperBoard
+        isDraggable={!isDisable}
+        isOverBoard={desk === 'layout' && board.isOverBoard}
+        isAddLayout={desk === 'layout' && board.isAddLayout}
+        isOverDesk={desk === 'layout' && board.isLastElementLayoutDesk}
+        isDisable={isDisable}
+        {...props}
+      >
         {operators}
       </WrapperBoard>
     );

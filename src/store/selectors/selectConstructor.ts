@@ -1,15 +1,10 @@
 import { createSelector } from '@reduxjs/toolkit';
 
 import { selectState } from 'store/store';
-import { sortBoards } from 'utils';
 
 export const selectSelectedElements = createSelector(
   selectState,
   state => state.constructorCalc.selectedElements,
-);
-
-export const selectSortSelectedElements = createSelector(selectState, state =>
-  state.constructorCalc.selectedElements.slice().sort(sortBoards),
 );
 
 export const selectCalculatorElements = createSelector(
@@ -22,9 +17,9 @@ export const selectIsConstructor = createSelector(
   state => state.constructorCalc.isConstructor,
 );
 
-export const selectCurrentBoardDragId = createSelector(
+export const selectCurrentBoardDrag = createSelector(
   selectState,
-  state => state.constructorCalc.currentBoardDragId,
+  state => state.constructorCalc.currentBoardDrag,
 );
 
 export const selectLastBoardId = createSelector(
@@ -33,6 +28,6 @@ export const selectLastBoardId = createSelector(
 );
 
 export const selectCurrentBoard = createSelector(
-  [selectCalculatorElements, selectCurrentBoardDragId],
-  (boards, currentBoardDragId) => boards.find(({ id }) => id === currentBoardDragId),
+  selectState,
+  state => state.constructorCalc.currentBoardDrag,
 );

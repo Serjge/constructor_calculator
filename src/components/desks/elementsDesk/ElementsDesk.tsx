@@ -1,15 +1,27 @@
 import { ReactElement } from 'react';
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { BOARD_COMPONENTS } from 'const';
-import { Draggable } from 'hoc/draggable/Draggable';
-import { selectCalculatorElements, selectIsConstructor } from 'store/selectors';
+import { Board } from 'enum';
+import { setCurrentBoardDrag } from 'store/action';
+import {
+  selectCalculatorElements,
+  selectIsConstructor,
+  selectSelectedElements,
+} from 'store/selectors';
 import { WrapperDesk } from 'style';
 
 export const ElementsDesk = (): ReactElement => {
+  const dispatch = useDispatch();
+
   const boards = useSelector(selectCalculatorElements);
   const isConstructor = useSelector(selectIsConstructor);
+  const selectedBoards = useSelector(selectSelectedElements);
+
+  const handleDragStart = (draggableBoard: Board) => () => {
+    dispatch(setCurrentBoardDrag(draggableBoard));
+  };
 
   if (!isConstructor) {
     return <WrapperDesk />;
@@ -17,16 +29,19 @@ export const ElementsDesk = (): ReactElement => {
 
   return (
     <WrapperDesk>
-      {boards.map(({ id, type, isDisable }) => {
-        const BoardComponent = BOARD_COMPONENTS[type];
+      {boards.map(board => {
+        const BoardComponent = BOARD_COMPONENTS[board];
+        const isAddBoard = selectedBoards.find(selectBoard => selectBoard === board);
+
         return (
-          <Draggable key={id} desk="elements" type={type} id={id} isDisable={isDisable}>
-            <BoardComponent
-              role="presentation"
-              isDisable={isDisable}
-              isDraggable={!isDisable}
-            />
-          </Draggable>
+          <BoardComponent
+            desk="elements"
+            key={board}
+            data-currency={board}
+            onDragStart={handleDragStart(board)}
+            draggable={!isAddBoard}
+            isDisable={!!isAddBoard}
+          />
         );
       })}
     </WrapperDesk>

@@ -1,22 +1,17 @@
 import { HTMLAttributes } from 'react';
 
-import { ComponentsBoardsType } from 'types';
+import { Board } from 'enum';
 
 export type BoardType = {
   id: string;
-  type: ComponentsBoardsType;
+  type: Board;
   isDisable: boolean;
   isAddLayout: boolean;
-  order: number;
   isOverBoard: boolean;
   isLastElementLayoutDesk: boolean;
 };
 
 export type BoardPropsType = HTMLAttributes<HTMLElement> & {
-  isAddLayout?: boolean;
-  isDraggable?: boolean;
-  isOverDesk?: boolean;
-  isOverBoard?: boolean;
   isDisable?: boolean;
-  isVisible?: boolean;
+  desk?: 'elements' | 'layout';
 };
