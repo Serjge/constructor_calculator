@@ -3,20 +3,26 @@ import { memo, ReactElement } from 'react';
 import { useSelector } from 'react-redux';
 
 import { NumberDisplay } from 'components';
-import { selectBoardNumberDisplay } from 'store/selectors/selectBoard';
+import { Board } from 'enum';
+import { selectSelectedElements } from 'store/selectors';
+import { selectLastElementLayoutDesk } from 'store/selectors/selectBoard';
 import { WrapperBoard } from 'style';
 import { BoardPropsType } from 'types';
 
 export const NumberDisplayBoard = memo(
-  ({ isDisable, desk = 'layout', ...props }: BoardPropsType): ReactElement => {
-    const board = useSelector(selectBoardNumberDisplay);
+  ({ desk = 'layout', ...props }: BoardPropsType): ReactElement => {
+    const selectedBoards = useSelector(selectSelectedElements);
+    const isDisable = selectedBoards.includes(Board.NumberDisplay);
+    const lastElementLayoutDesk = useSelector(selectLastElementLayoutDesk);
 
     return (
       <WrapperBoard
-        isDraggable={!board.isAddLayout}
-        isAddLayout={desk === 'layout' && board.isAddLayout}
-        isOverDesk={desk === 'layout' && board.isLastElementLayoutDesk}
-        isDisable={isDisable}
+        isDraggable={!selectedBoards.includes(Board.Numbers)}
+        isAddLayout={desk === 'layout' && selectedBoards.includes(Board.Numbers)}
+        isOverDesk={desk === 'layout' && lastElementLayoutDesk === Board.NumberDisplay}
+        isDisable={desk === 'elements' && isDisable}
+        draggable={desk === 'elements' && !isDisable}
+        data-currency={Board.NumberDisplay}
         {...props}
       >
         <NumberDisplay />

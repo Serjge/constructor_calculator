@@ -2,14 +2,11 @@ import { DragEvent, FC, ReactElement } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
+import { Board } from 'enum';
 import { useSetOverWhichBoard } from 'hooks';
 import { Leaf } from 'icon';
 import { addBoard, setCurrentBoardDrag, setLastElementLayoutDesk } from 'store/action';
-import {
-  selectCurrentBoard,
-  selectBoards,
-  selectSelectedElements,
-} from 'store/selectors';
+import { selectCurrentBoard, selectSelectedElements } from 'store/selectors';
 import { WrapperDesk } from 'style';
 
 const EMPTY_ARRAY = 0;
@@ -22,18 +19,16 @@ export const Droppable: FC = ({ children }): ReactElement => {
 
   const selectedBoards = useSelector(selectSelectedElements);
   const currentBoard = useSelector(selectCurrentBoard);
-  const board = useSelector(selectBoards);
 
   const handleDragOver = (e: DragEvent<HTMLDivElement>): void => {
     e.preventDefault();
     setOverWhichBoard(e, '#F0F9FF');
     e.stopPropagation();
 
-    if (!board[currentBoard!].isAddLayout) {
+    if (currentBoard && !selectedBoards.includes(currentBoard)) {
       if (selectedBoards.length !== EMPTY_ARRAY) {
         dispatch(
           setLastElementLayoutDesk({
-            isLastElementLayoutDesk: true,
             typeBoard: selectedBoards[selectedBoards.length - LAST_ELEMENT_ARRAY],
           }),
         );
@@ -47,7 +42,7 @@ export const Droppable: FC = ({ children }): ReactElement => {
     e.currentTarget.style.background = 'none';
 
     if (currentBoard) {
-      if (!board[currentBoard].isAddLayout) {
+      if (!selectedBoards.includes(currentBoard)) {
         dispatch(addBoard({ board: currentBoard }));
       }
     }
@@ -56,6 +51,13 @@ export const Droppable: FC = ({ children }): ReactElement => {
 
   const handleDragLeave = (e: DragEvent<HTMLDivElement>): void => {
     setOverWhichBoard(e, 'none');
+    const typeBoard = String(e.currentTarget.dataset);
+
+    dispatch(
+      setLastElementLayoutDesk({
+        typeBoard: typeBoard as Board,
+      }),
+    );
   };
 
   if (selectedBoards.length === EMPTY_ARRAY) {

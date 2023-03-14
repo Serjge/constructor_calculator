@@ -7,10 +7,4 @@ export {
   selectCurrentBoard,
 } from './selectConstructor';
 export { selectSaveValue, selectVisibleValue, selectOperator } from './selectCalculator';
-export {
-  selectBoardNumberDisplay,
-  selectBoardOperators,
-  selectBoardEqualsSing,
-  selectBoardNumbers,
-  selectBoards,
-} from './selectBoard';
+export { selectLastElementLayoutDesk, selectOverBoard } from './selectBoard';

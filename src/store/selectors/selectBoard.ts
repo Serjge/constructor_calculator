@@ -2,24 +2,11 @@ import { createSelector } from '@reduxjs/toolkit';
 
 import { selectState } from 'store/store';
 
-export const selectBoards = createSelector(selectState, state => state.board.desks);
-export const selectBoardNumberDisplay = createSelector(
+export const selectOverBoard = createSelector(
   selectState,
-  state => state.board.desks.numberDisplay,
+  state => state.board.overBoard,
 );
-export const selectBoardNumbers = createSelector(
+export const selectLastElementLayoutDesk = createSelector(
   selectState,
-  state => state.board.desks.numbers,
-);
-export const selectBoardOperators = createSelector(
-  selectState,
-  state => state.board.desks.operators,
-);
-export const selectBoardEqualsSing = createSelector(
-  selectState,
-  state => state.board.desks.equalsSing,
-);
-export const selectIsOverBoard = createSelector(
-  selectState,
-  state => state.board.isOverBoard,
+  state => state.board.lastElementLayoutDesk,
 );

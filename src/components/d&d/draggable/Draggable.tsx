@@ -8,7 +8,6 @@ import {
   addBoard,
   deleteBoard,
   setCurrentBoardDrag,
-  setLastElementLayoutDesk,
   setOrder,
   setOverBoard,
 } from 'store/action';
@@ -17,13 +16,10 @@ import {
   selectCurrentBoardDrag,
   selectSelectedElements,
 } from 'store/selectors';
-import { selectBoards } from 'store/selectors/selectBoard';
 
 type DraggableProps = {
   type: Board;
 };
-
-const LAST_ELEMENT_ARRAY = 1;
 
 export const Draggable: FC<DraggableProps> = ({ type, children }) => {
   const dispatch = useDispatch();
@@ -32,7 +28,6 @@ export const Draggable: FC<DraggableProps> = ({ type, children }) => {
 
   const selectedBoards = useSelector(selectSelectedElements);
   const currentBoardDrag = useSelector(selectCurrentBoardDrag);
-  const board = useSelector(selectBoards);
   const currentBoard = useSelector(selectCurrentBoard);
 
   const handleDragOver = (e: DragEvent<HTMLDivElement>): void => {
@@ -58,17 +53,11 @@ export const Draggable: FC<DraggableProps> = ({ type, children }) => {
           dispatch(setOrder({ sourceIndex, destinationIndex }));
         }
       } else if (currentBoard) {
-        if (!board[currentBoard].isAddLayout) {
+        if (!selectedBoards.includes(currentBoard)) {
           dispatch(addBoard({ board: currentBoard, destinationIndex }));
         }
       }
       dispatch(setCurrentBoardDrag(null));
-      dispatch(
-        setLastElementLayoutDesk({
-          isLastElementLayoutDesk: false,
-          typeBoard: selectedBoards[selectedBoards.length - LAST_ELEMENT_ARRAY],
-        }),
-      );
     };
 
   const handleDragLeave = (): void => {
