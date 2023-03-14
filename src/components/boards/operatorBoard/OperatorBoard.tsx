@@ -1,10 +1,10 @@
 import { memo, ReactElement } from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { Button } from 'components';
 import { Board, Desk } from 'enum';
-import { resetValue, setOperator } from 'store/action';
+import { useCalc } from 'hooks/useCalc';
 import { selectIsConstructor, selectSelectedElements } from 'store/selectors';
 import {
   selectLastElementLayoutDesk,
@@ -17,18 +17,13 @@ const OPERATORS: OperatorType[] = ['/', 'X', '-', '+'];
 
 export const OperatorBoard = memo(
   ({ desk = Desk.layout, ...props }: BoardPropsType): ReactElement => {
-    const dispatch = useDispatch();
-
     const isConstructor = useSelector(selectIsConstructor);
     const isOverBoard = useSelector(selectOverBoard);
     const selectedBoards = useSelector(selectSelectedElements);
     const isDisable = selectedBoards.includes(Board.Operators);
     const lastElementLayoutDesk = useSelector(selectLastElementLayoutDesk);
 
-    const handleClick = (operator: OperatorType): void => {
-      dispatch(setOperator(operator));
-      dispatch(resetValue());
-    };
+    const { setOperatorClick } = useCalc();
 
     const operators = OPERATORS.map(operator => {
       if (isConstructor) {
@@ -44,7 +39,7 @@ export const OperatorBoard = memo(
           key={operator}
           typeButton="small"
           isAddLayout={selectedBoards.includes(Board.Operators)}
-          onClick={() => handleClick(operator)}
+          onClick={() => setOperatorClick(operator)}
         >
           {operator}
         </Button>

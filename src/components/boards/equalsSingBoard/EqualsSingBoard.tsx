@@ -1,10 +1,10 @@
 import { memo, ReactElement } from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { Button } from 'components';
 import { Board, Desk } from 'enum';
-import { getResult, setOperator } from 'store/action';
+import { useCalc } from 'hooks/useCalc';
 import { selectIsConstructor, selectSelectedElements } from 'store/selectors';
 import {
   selectLastElementLayoutDesk,
@@ -15,18 +15,13 @@ import { BoardPropsType } from 'types';
 
 export const EqualsSingBoard = memo(
   ({ desk = Desk.layout, ...props }: BoardPropsType): ReactElement => {
-    const dispatch = useDispatch();
+    const { getResultClick } = useCalc();
 
     const isConstructor = useSelector(selectIsConstructor);
     const isOverBoard = useSelector(selectOverBoard);
     const selectedBoards = useSelector(selectSelectedElements);
     const isDisable = selectedBoards.includes(Board.EqualsSing);
     const lastElementLayoutDesk = useSelector(selectLastElementLayoutDesk);
-
-    const handleClick = (): void => {
-      dispatch(getResult());
-      dispatch(setOperator(null));
-    };
 
     return (
       <WrapperBoard
@@ -43,7 +38,7 @@ export const EqualsSingBoard = memo(
           <Button typeButton="long">=</Button>
         ) : (
           <Button
-            onClick={handleClick}
+            onClick={getResultClick}
             isAddLayout={selectedBoards.includes(Board.EqualsSing)}
             typeButton="long"
           >
