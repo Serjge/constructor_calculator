@@ -3,7 +3,7 @@ import { ReactElement } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { BOARD_COMPONENTS } from 'const';
-import { Board } from 'enum';
+import { Board, Desk } from 'enum';
 import { setCurrentBoardDrag } from 'store/action';
 import { selectCalculatorElements, selectIsConstructor } from 'store/selectors';
 import { WrapperDesk } from 'style';
@@ -29,7 +29,7 @@ export const ElementsDesk = (): ReactElement => {
 
         return (
           <BoardComponent
-            desk="elements"
+            desk={Desk.elements}
             key={board}
             onDragStart={handleDragStart(board)}
           />

@@ -3,7 +3,7 @@ import { memo, ReactElement } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Button } from 'components';
-import { Board } from 'enum';
+import { Board, Desk } from 'enum';
 import { getResult, setOperator } from 'store/action';
 import { selectIsConstructor, selectSelectedElements } from 'store/selectors';
 import {
@@ -14,7 +14,7 @@ import { WrapperBoard } from 'style';
 import { BoardPropsType } from 'types';
 
 export const EqualsSingBoard = memo(
-  ({ desk = 'layout', ...props }: BoardPropsType): ReactElement => {
+  ({ desk = Desk.layout, ...props }: BoardPropsType): ReactElement => {
     const dispatch = useDispatch();
 
     const isConstructor = useSelector(selectIsConstructor);
@@ -30,12 +30,12 @@ export const EqualsSingBoard = memo(
 
     return (
       <WrapperBoard
-        isDraggable={desk === 'elements' ? !isDisable : isDisable}
-        isOverBoard={desk === 'layout' && isOverBoard === Board.EqualsSing}
-        isAddLayout={desk === 'layout' && selectedBoards.includes(Board.EqualsSing)}
-        isOverDesk={desk === 'layout' && lastElementLayoutDesk === Board.EqualsSing}
-        isDisable={desk === 'elements' && isDisable}
-        draggable={desk === 'elements' && !isDisable}
+        isDraggable={desk === Desk.elements ? !isDisable : isDisable}
+        isOverBoard={desk === Desk.layout && isOverBoard === Board.EqualsSing}
+        isAddLayout={desk === Desk.layout && selectedBoards.includes(Board.EqualsSing)}
+        isOverDesk={desk === Desk.layout && lastElementLayoutDesk === Board.EqualsSing}
+        isDisable={desk === Desk.elements && isDisable}
+        draggable={desk === Desk.elements && !isDisable}
         data-currency={Board.EqualsSing}
         {...props}
       >
@@ -44,7 +44,7 @@ export const EqualsSingBoard = memo(
         ) : (
           <Button
             onClick={handleClick}
-            isAddLayout={selectedBoards.includes(Board.Numbers)}
+            isAddLayout={selectedBoards.includes(Board.EqualsSing)}
             typeButton="long"
           >
             =

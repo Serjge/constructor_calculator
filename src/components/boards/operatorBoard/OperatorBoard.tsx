@@ -3,7 +3,7 @@ import { memo, ReactElement } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Button } from 'components';
-import { Board } from 'enum';
+import { Board, Desk } from 'enum';
 import { resetValue, setOperator } from 'store/action';
 import { selectIsConstructor, selectSelectedElements } from 'store/selectors';
 import {
@@ -16,7 +16,7 @@ import { BoardPropsType, OperatorType } from 'types';
 const OPERATORS: OperatorType[] = ['/', 'X', '-', '+'];
 
 export const OperatorBoard = memo(
-  ({ desk = 'layout', ...props }: BoardPropsType): ReactElement => {
+  ({ desk = Desk.layout, ...props }: BoardPropsType): ReactElement => {
     const dispatch = useDispatch();
 
     const isConstructor = useSelector(selectIsConstructor);
@@ -43,7 +43,7 @@ export const OperatorBoard = memo(
         <Button
           key={operator}
           typeButton="small"
-          isAddLayout={selectedBoards.includes(Board.Numbers)}
+          isAddLayout={selectedBoards.includes(Board.Operators)}
           onClick={() => handleClick(operator)}
         >
           {operator}
@@ -53,12 +53,12 @@ export const OperatorBoard = memo(
 
     return (
       <WrapperBoard
-        isDraggable={desk === 'elements' ? !isDisable : isDisable}
-        isOverBoard={desk === 'layout' && isOverBoard === Board.Operators}
-        isAddLayout={desk === 'layout' && selectedBoards.includes(Board.Numbers)}
-        isOverDesk={desk === 'layout' && lastElementLayoutDesk === Board.Operators}
-        isDisable={desk === 'elements' && isDisable}
-        draggable={desk === 'elements' && !isDisable}
+        isDraggable={desk === Desk.elements ? !isDisable : isDisable}
+        isOverBoard={desk === Desk.layout && isOverBoard === Board.Operators}
+        isAddLayout={desk === Desk.layout && selectedBoards.includes(Board.Operators)}
+        isOverDesk={desk === Desk.layout && lastElementLayoutDesk === Board.Operators}
+        isDisable={desk === Desk.elements && isDisable}
+        draggable={desk === Desk.elements && !isDisable}
         data-currency={Board.Operators}
         {...props}
       >
