@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { Board } from 'enum';
-import { addBoard, deleteBoard } from 'store/action';
+import { addBoard, deleteBoard, setOrder } from 'store/action';
 import { BoardType } from 'types';
 
 export type BoardStateType = {
@@ -87,6 +87,12 @@ export const boardSlice = createSlice({
     builder.addCase(deleteBoard, (state, action) => {
       state[action.payload].isAddLayout = false;
       state[action.payload].isDisable = false;
+    });
+    builder.addCase(setOrder, state => {
+      Object.keys(state).forEach(key => {
+        state[key as Board].isLastElementLayoutDesk = false;
+        state[key as Board].isOverBoard = false;
+      });
     });
   },
 });
