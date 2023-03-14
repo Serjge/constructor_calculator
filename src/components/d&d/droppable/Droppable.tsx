@@ -26,7 +26,7 @@ export const Droppable: FC = ({ children }): ReactElement => {
 
   const handleDragOver = (e: DragEvent<HTMLDivElement>): void => {
     e.preventDefault();
-    setOverWhichBoard(e, '#F0F9FF', true);
+    setOverWhichBoard(e, '#F0F9FF');
     e.stopPropagation();
 
     if (!board[currentBoard!].isAddLayout) {
@@ -55,7 +55,7 @@ export const Droppable: FC = ({ children }): ReactElement => {
   };
 
   const handleDragLeave = (e: DragEvent<HTMLDivElement>): void => {
-    setOverWhichBoard(e, 'none', false);
+    setOverWhichBoard(e, 'none');
   };
 
   if (selectedBoards.length === EMPTY_ARRAY) {

@@ -10,6 +10,7 @@ import {
   setCurrentBoardDrag,
   setLastElementLayoutDesk,
   setOrder,
+  setOverBoard,
 } from 'store/action';
 import {
   selectCurrentBoard,
@@ -36,14 +37,15 @@ export const Draggable: FC<DraggableProps> = ({ type, children }) => {
 
   const handleDragOver = (e: DragEvent<HTMLDivElement>): void => {
     e.preventDefault();
-    setOverWhichBoard(e, '#F0F9FF', true);
+    e.stopPropagation();
+    setOverWhichBoard(e, '#F0F9FF');
   };
 
   const handleDropToBoard =
     (draggableBoardId: string) =>
     (e: DragEvent<HTMLDivElement>): void => {
       e.preventDefault();
-      setOverWhichBoard(e, 'none', false);
+      setOverWhichBoard(e, 'none');
       e.stopPropagation();
 
       const dragBoardLayoutDesk = selectedBoards.find(el => el === currentBoard);
@@ -69,9 +71,8 @@ export const Draggable: FC<DraggableProps> = ({ type, children }) => {
       );
     };
 
-  const handleDragLeave = (e: DragEvent<HTMLDivElement>): void => {
-    setOverWhichBoard(e, 'none', false);
-    e.stopPropagation();
+  const handleDragLeave = (): void => {
+    dispatch(setOverBoard({ typeBoard: null }));
   };
 
   const handleDragEnd = (e: DragEvent<HTMLDivElement>): void => {

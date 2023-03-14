@@ -1,33 +1,30 @@
 import { DragEvent } from 'react';
 
+import { useDispatch, useSelector } from 'react-redux';
+
 import { BOARD_TYPE } from 'const';
 import { Board } from 'enum';
-import { UseSetOverBoard } from 'hooks';
+import { setOverBoard } from 'store/action';
+import { selectCurrentBoardDrag } from 'store/selectors';
 
-type UseQweType = (
+type UseSetOverWhichBoardType = (
   e: DragEvent<HTMLDivElement>,
   background: string,
-  isOverBoard: boolean,
 ) => void;
 
-export const useSetOverWhichBoard = (): UseQweType => {
-  const setOverBoard = UseSetOverBoard();
+export const useSetOverWhichBoard = (): UseSetOverWhichBoardType => {
+  const currentBoardDrag = useSelector(selectCurrentBoardDrag);
+  const dispatch = useDispatch();
 
-  return (
-    e: DragEvent<HTMLDivElement>,
-    background: string,
-    isOverBoard: boolean,
-  ): void => {
+  return (e: DragEvent<HTMLDivElement>, background: string): void => {
     const { currency } = e.currentTarget.dataset;
 
     if (currency === 'emptyDesk') {
       e.currentTarget.style.background = background;
     }
 
-    if (BOARD_TYPE.includes(currency!)) {
-      setOverBoard(currency, Board.Numbers, isOverBoard);
-      setOverBoard(currency, Board.Operators, isOverBoard);
-      setOverBoard(currency, Board.EqualsSing, isOverBoard);
+    if (BOARD_TYPE.includes(currency!) && currentBoardDrag !== currency) {
+      dispatch(setOverBoard({ typeBoard: currency as Board }));
     }
   };
 };

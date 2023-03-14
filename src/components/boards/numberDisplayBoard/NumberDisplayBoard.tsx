@@ -14,7 +14,6 @@ export const NumberDisplayBoard = memo(
     return (
       <WrapperBoard
         isDraggable={!board.isAddLayout}
-        isOverBoard={desk === 'layout' && board.isOverBoard}
         isAddLayout={desk === 'layout' && board.isAddLayout}
         isOverDesk={desk === 'layout' && board.isLastElementLayoutDesk}
         isDisable={isDisable}

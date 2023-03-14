@@ -3,9 +3,10 @@ import { memo, ReactElement } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Button } from 'components';
+import { Board } from 'enum';
 import { getResult, setOperator } from 'store/action';
 import { selectIsConstructor } from 'store/selectors';
-import { selectBoardEqualsSing } from 'store/selectors/selectBoard';
+import { selectBoardEqualsSing, selectIsOverBoard } from 'store/selectors/selectBoard';
 import { WrapperBoard } from 'style';
 import { BoardPropsType } from 'types';
 
@@ -15,6 +16,7 @@ export const EqualsSingBoard = memo(
 
     const isConstructor = useSelector(selectIsConstructor);
     const board = useSelector(selectBoardEqualsSing);
+    const isOverBoard = useSelector(selectIsOverBoard);
 
     const handleClick = (): void => {
       dispatch(getResult());
@@ -24,7 +26,7 @@ export const EqualsSingBoard = memo(
     return (
       <WrapperBoard
         isDraggable={!isDisable}
-        isOverBoard={desk === 'layout' && board.isOverBoard}
+        isOverBoard={desk === 'layout' && isOverBoard === Board.EqualsSing}
         isAddLayout={desk === 'layout' && board.isAddLayout}
         isOverDesk={desk === 'layout' && board.isLastElementLayoutDesk}
         isDisable={isDisable}

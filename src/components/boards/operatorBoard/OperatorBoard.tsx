@@ -3,9 +3,10 @@ import { memo, ReactElement } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Button } from 'components';
+import { Board } from 'enum';
 import { resetValue, setOperator } from 'store/action';
 import { selectIsConstructor } from 'store/selectors';
-import { selectBoardOperators } from 'store/selectors/selectBoard';
+import { selectBoardOperators, selectIsOverBoard } from 'store/selectors/selectBoard';
 import { WrapperBoard } from 'style';
 import { BoardPropsType, OperatorType } from 'types';
 
@@ -17,6 +18,7 @@ export const OperatorBoard = memo(
 
     const isConstructor = useSelector(selectIsConstructor);
     const board = useSelector(selectBoardOperators);
+    const isOverBoard = useSelector(selectIsOverBoard);
 
     const handleClick = (operator: OperatorType): void => {
       dispatch(setOperator(operator));
@@ -46,8 +48,7 @@ export const OperatorBoard = memo(
 
     return (
       <WrapperBoard
-        isDraggable={!isDisable}
-        isOverBoard={desk === 'layout' && board.isOverBoard}
+        isOverBoard={desk === 'layout' && isOverBoard === Board.Operators}
         isAddLayout={desk === 'layout' && board.isAddLayout}
         isOverDesk={desk === 'layout' && board.isLastElementLayoutDesk}
         isDisable={isDisable}

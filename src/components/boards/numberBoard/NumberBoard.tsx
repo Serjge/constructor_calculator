@@ -3,9 +3,10 @@ import { memo, ReactElement, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Button } from 'components';
+import { Board } from 'enum';
 import { setValue } from 'store/action';
 import { selectIsConstructor } from 'store/selectors';
-import { selectBoardNumbers } from 'store/selectors/selectBoard';
+import { selectBoardNumbers, selectIsOverBoard } from 'store/selectors/selectBoard';
 import { WrapperBoard } from 'style';
 import { BoardPropsType } from 'types';
 
@@ -17,6 +18,7 @@ export const NumberBoard = memo(
 
     const isConstructor = useSelector(selectIsConstructor);
     const board = useSelector(selectBoardNumbers);
+    const isOverBoard = useSelector(selectIsOverBoard);
 
     const handleClick = useCallback((number: string): void => {
       dispatch(setValue(number));
@@ -45,7 +47,7 @@ export const NumberBoard = memo(
     return (
       <WrapperBoard
         isDraggable={!isDisable}
-        isOverBoard={desk === 'layout' && board.isOverBoard}
+        isOverBoard={desk === 'layout' && isOverBoard === Board.Numbers}
         isAddLayout={desk === 'layout' && board.isAddLayout}
         isOverDesk={desk === 'layout' && board.isLastElementLayoutDesk}
         isDisable={isDisable}
