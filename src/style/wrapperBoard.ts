@@ -1,8 +1,10 @@
 import styled, { css, FlattenSimpleInterpolation } from 'styled-components';
 
+import { DraggableCursor } from 'enum';
+
 type WrapperBoardPropsType = {
   isAddLayout?: boolean;
-  isDraggable?: boolean;
+  draggableCursor?: DraggableCursor;
   isOverDesk?: boolean;
   isOverBoard?: boolean;
   isDisable?: boolean;
@@ -40,9 +42,24 @@ export const WrapperBoard = styled.div<WrapperBoardPropsType>`
   opacity: ${({ isDisable }) => (isDisable ? '0.5' : '1')};
   background-color: ${({ theme: { mainBackgroundColor } }) => mainBackgroundColor};
 
-  ${({ isDraggable }) => css`
-    cursor: ${isDraggable ? 'move' : 'not-allowed'};
-  `}}
+  ${({ draggableCursor }) => {
+    if (draggableCursor === DraggableCursor.Move) {
+      return css`
+        cursor: move;
+      `;
+    }
+
+    if (draggableCursor === DraggableCursor.NotMove) {
+      return css`
+        cursor: not-allowed;
+      `;
+    }
+    return css`
+      cursor: default;
+    `;
+  }}
+
+}
 
   ${({ isAddLayout, isOverDesk, isOverBoard, theme: { mainColor } }) => {
     if (isOverBoard || isOverDesk) {

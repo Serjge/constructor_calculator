@@ -13,6 +13,7 @@ import {
 } from 'store/selectors';
 import { WrapperBoard } from 'style';
 import { BoardPropsType } from 'types';
+import { getCursor } from 'utils';
 
 const NUMBERS = ['7', '8', '9', '4', '5', '6', '1', '2', '3', '0', '.'];
 
@@ -48,7 +49,7 @@ export const NumberBoard = memo(
 
     return (
       <WrapperBoard
-        isDraggable={desk === Desk.elements ? !isDisable : isDisable}
+        draggableCursor={getCursor(desk, isDisable, isConstructor)}
         isOverBoard={desk === Desk.layout && isOverBoard === Board.Numbers}
         isAddLayout={desk === Desk.layout && selectedBoards.includes(Board.Numbers)}
         isOverDesk={desk === Desk.layout && lastElementLayoutDesk === Board.Numbers}

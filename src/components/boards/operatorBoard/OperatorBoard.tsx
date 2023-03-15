@@ -12,6 +12,7 @@ import {
 } from 'store/selectors/selectBoard';
 import { WrapperBoard } from 'style';
 import { BoardPropsType, OperatorType } from 'types';
+import { getCursor } from 'utils';
 
 const OPERATORS: OperatorType[] = ['/', 'X', '-', '+'];
 
@@ -48,7 +49,7 @@ export const OperatorBoard = memo(
 
     return (
       <WrapperBoard
-        isDraggable={desk === Desk.elements ? !isDisable : isDisable}
+        draggableCursor={getCursor(desk, isDisable, isConstructor)}
         isOverBoard={desk === Desk.layout && isOverBoard === Board.Operators}
         isAddLayout={desk === Desk.layout && selectedBoards.includes(Board.Operators)}
         isOverDesk={desk === Desk.layout && lastElementLayoutDesk === Board.Operators}

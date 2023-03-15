@@ -12,6 +12,7 @@ import {
 } from 'store/selectors/selectBoard';
 import { WrapperBoard } from 'style';
 import { BoardPropsType } from 'types';
+import { getCursor } from 'utils';
 
 export const EqualsSingBoard = memo(
   ({ desk = Desk.layout, ...props }: BoardPropsType): ReactElement => {
@@ -25,7 +26,7 @@ export const EqualsSingBoard = memo(
 
     return (
       <WrapperBoard
-        isDraggable={desk === Desk.elements ? !isDisable : isDisable}
+        draggableCursor={getCursor(desk, isDisable, isConstructor)}
         isOverBoard={desk === Desk.layout && isOverBoard === Board.EqualsSing}
         isAddLayout={desk === Desk.layout && selectedBoards.includes(Board.EqualsSing)}
         isOverDesk={desk === Desk.layout && lastElementLayoutDesk === Board.EqualsSing}
